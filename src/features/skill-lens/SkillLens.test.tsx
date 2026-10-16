@@ -20,6 +20,7 @@ const project = (id: string, title: string, skills: string[], featured = false):
   skills: skills as Project['skills'],
   links: [],
   featured,
+  caseStudy: { problem: '', built: '', decisions: [], outcome: '' },
 });
 
 const role = (id: string, org: string, skills: string[]): Experience => ({

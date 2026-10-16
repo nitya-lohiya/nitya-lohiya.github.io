@@ -3,7 +3,7 @@
 **Live site:** https://nitya-lohiya.github.io
 **Stack:** React 19 · TypeScript · Vite · plain CSS (design tokens) · Vitest + Testing Library · GitHub Actions · GitHub Pages
 
-A single-page portfolio covering my experience, projects, skills, resume, and a bit of who I am outside of code. It supports light and dark themes, works on phones and with a keyboard, and respects reduced-motion settings.
+A single-page portfolio covering my experience, projects, skills, and resume. It supports light and dark themes, works on phones and with a keyboard, and respects reduced-motion settings.
 
 ## The interactive feature: the skill lens
 
@@ -70,9 +70,9 @@ If the repo is not named `<username>.github.io`, set `base: '/<repo-name>/'` in 
 
 ## Editing content
 
-All copy lives in **[`src/data/content.ts`](src/data/content.ts)**: profile, bio, experience, projects, skills, and the "beyond the resume" cards. Components only render it.
+All copy lives in **[`src/data/content.ts`](src/data/content.ts)**: profile, bio, experience, projects, skills, and the "What I build" cards. Components only render it.
 
-- **Add a role or project:** append to `experience` or `projects`. Use skill ids from `skillTaxonomy` in `skills` (the tests will fail otherwise), and fill in `audience`, the "Built for" line. For a project, `featured: true` plus a `caseStudy` gives it a full-width card with a "How I built it" panel.
+- **Add a role or project:** append to `experience` or `projects`. Use skill ids from `skillTaxonomy` in `skills` (the tests will fail otherwise), and fill in `audience`, the "Built for" line. Every project needs a `caseStudy` (its "How I built it" panel); `featured: true` makes the card full width.
 - **Resume:** replace `public/Nitya_Lohiya_Resume.pdf` (keep the name, or update `profile.resume`).
 - **Photo:** put an image in `public/` and set `profile.photo` to its path, e.g. `'/nitya.jpg'`.
 - **LinkedIn:** set `profile.linkedin`. Empty fields are hidden on the site.

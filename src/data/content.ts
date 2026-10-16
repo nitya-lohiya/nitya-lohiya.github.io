@@ -14,49 +14,53 @@ export const profile = {
   linkedin: '', // [ADD: LinkedIn URL, e.g. https://www.linkedin.com/in/your-handle]
   photo: '', // [ADD: drop a photo in /public (e.g. /nitya.jpg) and put its path here]
   resume: '/Nitya_Lohiya_Resume.pdf',
-
-  // Alternatives: "Software that makes someone's day a little easier."
-  //               "I build for the people on the other side of the screen."
-  tagline: 'I build technology that makes people’s lives better.',
   positioning:
-    'I’m a CS + Statistics student at UIUC working across full-stack engineering, applied machine learning, and LLM systems. Every project I take on starts with the people it’s for.',
+    'CS + Statistics at UIUC. I build LLM pipelines, fine-tuned models, and the APIs and interfaces that put them to work.',
 } as const;
 
 export const bio: string[] = [
-  'Hi, I’m Nitya. I study Computer Science and Statistics at UIUC, and I build technology to make people’s lives a little better: a student getting the lesson they’re actually ready for, a family getting a fair shot at an after-school spot, a student club finally getting found.',
-  'I like owning the whole path, from the data and the model to the backend and the interface someone uses. Lately that has meant knowledge graphs and recommendation engines for adaptive learning, full-stack web platforms, and fine-tuned language models.',
-  'The question I keep coming back to is why AI systems fail, and what it takes to make them reliable enough to deserve people’s trust. Along the way I’ve led a six-person engineering team and mentor intro CS students as a course assistant.',
-  'Away from a keyboard, I’ve practiced Bharatanatyam for more than ten years, and I’m always up for a hike or somewhere I haven’t been yet.',
+  'Hi, I’m Nitya. I’m a CS + Statistics student at UIUC, and the parts of a system I like building most are the ones that have to be right: the model, the data underneath it, and the API that serves it.',
+  'At ITQAN Academy I turned a Grade 6 math curriculum into a knowledge graph. An LLM pulls out the concepts and prerequisites, then SHACL rules, an NLI model, and PyKEEN embeddings check its work, because one wrong prerequisite edge sends a student down the wrong path. At IDX Exchange I built a React + Express + MySQL app over 53,000 property records and used EXPLAIN ANALYZE to tune composite indexes until the main filtered search ran in under a millisecond.',
+  'The Statistics half of my degree shows up everywhere. The recommender I designed at ITQAN stacks Bayesian Knowledge Tracing, a Hidden Markov model, and a contextual bandit, and the email classifier my ACM team shipped falls back to rules whenever BERT is less than 70% sure. Knowing when a model is unsure is a big part of what makes it safe to use, and it’s the problem I want to keep working on: why AI systems fail, and how to make them reliable.',
+  'I also TA for CS 124, which mostly means helping people read their first stack trace. When I’m not coding, I’m usually dancing (ten-plus years of Bharatanatyam) or out on a trail.',
 ];
 
 export const quickFacts = [
   { label: 'School', value: 'University of Illinois Urbana-Champaign' },
   { label: 'Degree', value: 'B.S. Computer Science + Statistics' },
-  { label: 'Focus', value: 'Full-stack, applied ML, reliable LLM systems' },
+  { label: 'Focus', value: 'LLM systems, applied ML, full-stack engineering' },
   { label: 'Based in', value: 'Champaign-Urbana, IL' },
 ];
 
-/** "Who I build for" strip under the hero. Each entry points at the work that serves them. */
-export const audiences = [
+/** "What I build" strip under the hero: one technical focus area per card, each backed by real work. */
+export const focusAreas = [
   {
-    who: 'Students in Egypt & the Middle East',
-    what: 'A learning platform that knows which concept each student is ready for next.',
+    area: 'LLM + knowledge-graph pipelines',
+    metric: '119',
+    metricLabel: 'concepts, validated three ways',
+    detail: 'Schema-constrained EDC extraction with LangChain + Ollama, checked by SHACL, NLI, and PyKEEN embeddings.',
     href: '#exp-itqan',
   },
   {
-    who: 'Families at a Chicago elementary school',
-    what: 'A fairer way to hand out after-school spots, starting with the kids who need them most.',
-    href: '#exp-nobe',
+    area: 'Fine-tuned transformers',
+    metric: '96%',
+    metricLabel: 'test accuracy, 3 classes',
+    detail: 'bert-base-uncased fine-tuned with AdamW and a linear LR schedule, behind a confidence-gated rule layer.',
+    href: '#exp-acm',
   },
   {
-    who: '100+ student organizations at UIUC',
-    what: 'One place for students to discover them, instead of scattered posts and spreadsheets.',
-    href: '#project-rso-connect',
+    area: 'Full-stack + SQL performance',
+    metric: '2.3→0.9ms',
+    metricLabel: 'filtered search over 53K rows',
+    detail: 'Express 5 + mysql2 REST API, composite indexes profiled with EXPLAIN ANALYZE, React 19 frontend.',
+    href: '#exp-idx',
   },
   {
-    who: 'People with food allergies',
-    what: 'Recipe ideas that start from what they can’t eat.',
-    href: '#project-spoonbot',
+    area: 'Async Python APIs',
+    metric: '8',
+    metricLabel: 'FastAPI endpoints, deployed',
+    detail: 'Pydantic v2 models, concurrent npm lookups with httpx + asyncio.gather, Gemini behind strict error handling.',
+    href: '#project-osli',
   },
 ];
 
@@ -156,7 +160,19 @@ export const experience: Experience[] = [
       'Cleaned, validated, and organized the graph data into an algorithm-ready dataset for the downstream recommendation engine.',
       'Designed a three-layer adaptive recommendation architecture (Bayesian Knowledge Tracing with pyBKT, Hidden Markov modeling, and a contextual-bandit strategy) that personalizes learning paths from learner interaction data.',
     ],
-    tech: ['Python', 'LangChain', 'Ollama', 'SHACL', 'NLI', 'PyKEEN', 'pyBKT', 'Neo4j', 'Knowledge graphs'],
+    tech: [
+      'Python',
+      'LangChain',
+      'Ollama',
+      'EDC extraction',
+      'SHACL',
+      'NLI',
+      'PyKEEN',
+      'pyBKT',
+      'Hidden Markov models',
+      'Contextual bandits',
+      'Neo4j',
+    ],
     skills: ['python', 'llm', 'ml', 'knowledge-graphs', 'data-pipelines', 'statistics', 'databases'],
   },
   {
@@ -167,12 +183,27 @@ export const experience: Experience[] = [
     location: 'Remote',
     audience: 'People browsing homes and open houses, who need listings that load fast and stay accurate.',
     points: [
-      'Built a full-stack real estate listings platform end to end, serving RETS-standard property and open-house data from a MySQL 8 database through a Node.js/Express REST API to a React (Vite) frontend.',
-      'Developed the Express backend with a mysql2 connection pool and environment-based configuration, exposing REST endpoints that query and serve property and open-house records.',
-      'Built the React frontend to fetch and render live property listings from the API.',
-      'Containerized MySQL with Docker so the whole stack runs the same way on any machine.',
+      'Built a full-stack listings platform over 53,122 RETS-standard property records: a React 19 + Vite frontend, an Express 5 REST API, and MySQL 8 running in Docker.',
+      'Designed REST endpoints for filtered, paginated search (city, ZIP, price range, beds, baths) using LIMIT/OFFSET with a COUNT query for page totals, plus property-detail and open-house endpoints.',
+      'Hardened the API with parameterized queries through a mysql2 connection pool, strict query-parameter validation that returns 400s on bad input, and environment-based configuration.',
+      'Profiled queries with EXPLAIN ANALYZE and added composite indexes, cutting the main filtered search from 2.3 ms to 0.9 ms and the pagination count from 5.6 ms to 3.6 ms, and rewrote city matching into a sargable form that can use an index.',
+      'Built the UI with React Router: filters, pagination, a detail page with an image gallery and map, open-house schedules, and favorites synced across pages through useSyncExternalStore backed by localStorage.',
+      'Tested both layers: Jest + Supertest for the API routes, and Vitest + React Testing Library for components and hooks.',
     ],
-    tech: ['JavaScript', 'React', 'Vite', 'Node.js', 'Express', 'REST APIs', 'mysql2', 'MySQL 8', 'SQL', 'Docker'],
+    tech: [
+      'JavaScript',
+      'React 19',
+      'React Router',
+      'Vite',
+      'Node.js',
+      'Express 5',
+      'mysql2',
+      'MySQL 8',
+      'Docker',
+      'Jest',
+      'Supertest',
+      'Vitest',
+    ],
     skills: ['javascript', 'react', 'node', 'rest', 'sql', 'databases', 'docker', 'fullstack'],
     link: 'https://github.com/nitya-lohiya/IDX-Exchange-SDE-s26',
   },
@@ -187,12 +218,12 @@ export const experience: Experience[] = [
     audience: 'Families and staff at a Chicago public elementary school.',
     points: [
       'Building, as part of a consulting team, an after-school program lottery system that replaces a Google Form → spreadsheet → manual-draw workflow.',
-      'The system pairs a family-facing sign-up form and an admin dashboard with a tiered lottery engine that prioritizes students by need and carries unplaced students into the next round.',
+      'The system pairs a family-facing sign-up form and an admin dashboard with a Spring Boot backend and a tiered lottery engine that prioritizes students by need and carries unplaced students into the next round.',
+      'The draw is seeded, so every round is reproducible and a disputed placement can be audited, and the engine is unit-tested with JUnit.',
       'Designed around student-privacy law (FERPA and SOPPA): no third-party analytics, synthetic data only in development, and student information kept out of logs.',
-      'Work runs on an Agile cadence with weekly scrums, GitHub Issues, and branch-based pull requests.',
       // [ADD: one bullet on what YOU personally built, e.g. which tickets or screens you own]
     ],
-    tech: ['Java', 'Spring Boot', 'PostgreSQL', 'JavaScript', 'HTML/CSS', 'JUnit', 'Git'],
+    tech: ['Java', 'Spring Boot', 'Maven', 'PostgreSQL', 'JUnit', 'JavaScript', 'HTML/CSS', 'Git'],
     skills: ['java', 'javascript', 'sql', 'databases', 'fullstack'],
   },
   {
@@ -206,9 +237,9 @@ export const experience: Experience[] = [
     audience: 'Readers of The Daily Illini, UIUC’s independent student newspaper.',
     points: [
       'On the dev team building a personalized "For You" article feed for The Daily Illini website, so readers find the stories they care about.',
-      // [ADD: your specific contribution, plus 1–2 more bullets]
+      // [ADD: your specific contribution, the stack, and 1–2 more bullets]
     ],
-    tech: ['Recommendation systems'], // [ADD: the actual stack]
+    tech: ['Recommendation systems', 'Personalization'], // [ADD: the actual stack]
     skills: ['ml'],
   },
   {
@@ -219,13 +250,25 @@ export const experience: Experience[] = [
     location: 'Champaign, IL',
     audience: 'Anyone whose inbox buries the emails that actually matter.',
     points: [
-      'Led a 6-person team end to end: wrote the product spec, broke the work into tasks, delegated across model and API tracks, and owned software design through to a production-ready full-stack ML application.',
-      'Fine-tuned a BERT-base transformer (110M parameters) with PyTorch and HuggingFace Transformers for multi-class email priority classification.',
-      'Reached 96% test accuracy across all priority classes within 3 training epochs.',
-      'Architected a production REST API in FastAPI with 5 endpoints for single and batch email classification.',
+      'Led a 6-person team: wrote the product spec, split the work into data, model, API, and frontend tracks, and led the software design of a production-ready full-stack ML app.',
+      'Built the data pipeline from a HuggingFace email dataset (10,780 training and 2,697 test emails), mapping 6 source categories into High, Medium, and Low priority.',
+      'Fine-tuned bert-base-uncased (110M parameters) with PyTorch and HuggingFace Transformers: AdamW at a 2e-5 learning rate with a linear schedule, batch size 16, and 128-token inputs, reaching 96% test accuracy across all priority classes in 3 epochs.',
+      'Served the model through FastAPI with single and batch classification endpoints and softmax confidence scores, plus a rule layer: security emails (verification codes, password resets) always go to High, and keyword and sender rules apply only when BERT’s confidence drops below 0.70.',
+      'Connected live inboxes through Gmail OAuth endpoints and a React + Vite frontend that sorts email into priority columns.',
     ],
-    tech: ['Python', 'PyTorch', 'HuggingFace Transformers', 'BERT', 'FastAPI', 'REST APIs'],
-    skills: ['python', 'ml', 'pytorch', 'fastapi', 'rest', 'fullstack'],
+    tech: [
+      'Python',
+      'PyTorch',
+      'HuggingFace Transformers',
+      'bert-base-uncased',
+      'Pandas',
+      'scikit-learn',
+      'FastAPI',
+      'Gmail API (OAuth)',
+      'React',
+      'Vite',
+    ],
+    skills: ['python', 'ml', 'pytorch', 'fastapi', 'rest', 'react', 'data-pipelines', 'fullstack'],
     link: 'https://github.com/nitya-lohiya/Personalized-Email_Classifier',
   },
   {
@@ -237,7 +280,7 @@ export const experience: Experience[] = [
     current: true,
     audience: '30+ students taking their first programming course at UIUC.',
     points: [
-      'Guide 30+ students through Java assignments, helping them read errors, trace their code, and fix bugs on their own.',
+      'Guide 30+ students through Java assignments, helping them read compiler errors and stack traces, trace their code, and fix bugs on their own.',
       'Break abstract CS concepts into concrete steps, and explain technical material clearly to students from non-technical backgrounds.',
     ],
     tech: ['Java', 'Debugging', 'Technical communication'],
@@ -274,139 +317,171 @@ export type Project = {
   links: { label: string; href: string }[];
   status?: 'In progress';
   featured?: boolean;
-  caseStudy?: { problem: string; built: string; decisions: string[]; outcome: string };
+  caseStudy: { problem: string; built: string; decisions: string[]; outcome: string };
 };
 
 export const projects: Project[] = [
   {
+    id: 'osli',
+    title: 'OSLI: Open-Source License Intelligence',
+    summary: 'A deployed FastAPI service that scores license risk and resolves conflicts across npm dependencies.',
+    description:
+      '8 endpoints across discovery, risk & compliance, and developer tooling, combining the SPDX license list, live npm registry data, and Gemini 1.5 Flash. Deployed on Render with interactive Swagger docs.',
+    audience: 'Developers who want to ship without walking into a licensing problem.',
+    role: 'Developer, HackIllinois team',
+    context: 'HackIllinois · Feb 2026',
+    stack: ['Python', 'FastAPI', 'Pydantic v2', 'httpx', 'asyncio', 'Gemini 1.5 Flash', 'SPDX', 'Render'],
+    skills: ['python', 'fastapi', 'rest', 'llm'],
+    links: [
+      { label: 'Code', href: 'https://github.com/nitya-lohiya/Open-Source-License-API' },
+      { label: 'API docs', href: 'https://open-source-license-api.onrender.com/docs' },
+    ],
+    featured: true,
+    caseStudy: {
+      problem:
+        'License conflicts hide deep in dependency trees. A single copyleft package can block a release, and most developers never read the licenses they ship.',
+      built:
+        'A FastAPI app with Pydantic v2 request and response models, an in-memory SPDX license index loaded at startup through FastAPI’s lifespan hook, httpx for npm registry calls, and Gemini for library search, risk analysis, conflict resolution, and license-header generation.',
+      decisions: [
+        'Kept the cheap checks deterministic: license IDs are validated against SPDX, and compatibility checks run against a hand-built compatibility matrix, so only open-ended questions go to the LLM.',
+        'Batch audits fire every npm lookup concurrently with asyncio.gather(return_exceptions=True), so one broken package becomes a WARN row instead of failing the whole audit.',
+        'Ran the blocking Gemini SDK through asyncio.to_thread so it never stalls the event loop, stripped markdown fences from replies, and mapped malformed JSON to a 502 and a missing API key to a 503.',
+        'Normalized npm’s inconsistent license metadata (a string, an object, or an array) into a single license ID before scoring.',
+      ],
+      outcome: 'Built and deployed during HackIllinois 2026, live on Render with Swagger docs.',
+    },
+  },
+  {
     id: 'rso-connect',
     title: 'RSO Connect',
-    summary: 'One place to discover 100+ UIUC student organizations and their events.',
+    summary: 'A cross-platform Flutter app for discovering 100+ UIUC student organizations and their events.',
     description:
-      'A cross-platform Flutter app that replaces scattered Instagram posts and spreadsheets with a single discovery platform and a unified event calendar.',
+      'One Dart codebase targeting iOS, Android, web, and desktop: sign-in, an RSO directory, in-app membership applications, a "My RSOs" page, and a unified event calendar.',
     audience: 'UIUC students looking for their people, and the clubs trying to reach them.',
     role: 'Developer, team of 5',
     context: 'Dec 2025',
-    stack: ['Flutter', 'Dart', 'Firebase', 'Git'],
-    skills: ['dart', 'flutter', 'databases'],
+    stack: ['Flutter', 'Dart', 'ChangeNotifier', 'Syncfusion Calendar', 'table_calendar', 'Git'],
+    skills: ['dart', 'flutter'],
     links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/RSO-Connect-Project' }],
     featured: true,
     caseStudy: {
       problem:
         'Student organizations advertised across Instagram, group chats, and spreadsheets, so students missed events and clubs struggled to be found.',
       built:
-        'A cross-platform Flutter + Firebase app that centralizes 100+ RSOs, with a real-time event aggregation system that syncs each organization’s events into one calendar.',
+        'A Flutter app with a sign-in flow, an RSO directory, membership application forms, a "My RSOs" view, and a calendar built on Syncfusion’s Flutter calendar that aggregates events from every RSO a student joins.',
       decisions: [
-        'Chose Flutter so one codebase ships to both iOS and Android.',
-        'Aggregated decentralized event data into a single unified calendar instead of linking out to each club.',
+        'Centralized event state in a singleton CalendarManager (a ChangeNotifier), so the calendar re-renders the moment a student joins an RSO or an event is added.',
+        'Rebuilt the calendar from the student’s joined RSOs instead of keeping a separate copy, so events can’t drift out of sync with memberships.',
+        'Chose Flutter so one codebase ships to every platform.',
         'Ran post-launch user research with real students and iterated on features like calendar integration to improve retention and usability.',
       ],
-      outcome: 'Shipped to real student users, with 100+ RSOs on a single platform.',
-    },
-  },
-  {
-    id: 'osli',
-    title: 'OSLI: Open-Source License Intelligence',
-    summary: 'An API that scores license risk and resolves conflicts across npm dependencies.',
-    description:
-      'A production-grade REST API with 8 endpoints for license risk scoring, dependency auditing, compatibility checks, and Gemini-powered conflict resolution, built on live npm registry data.',
-    audience: 'Developers who want to ship without walking into a licensing problem.',
-    role: 'Developer',
-    context: 'HackIllinois · Feb 2026',
-    stack: ['Python', 'FastAPI', 'Gemini', 'SPDX', 'async HTTP'],
-    skills: ['python', 'fastapi', 'rest', 'llm'],
-    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/Open-Source-License-API' }],
-    featured: true,
-    caseStudy: {
-      problem: 'License conflicts hide deep in dependency trees, and most developers never read the licenses they ship.',
-      built:
-        'A FastAPI service with 8 endpoints that pulls live package data from the npm registry, scores license risk against SPDX identifiers, and uses Gemini to explain and resolve conflicts.',
-      decisions: [
-        'Fetched registry data with async HTTP requests so audits of many packages stay fast.',
-        'Added error handling and validation for edge cases such as missing or malformed license data.',
-        'Split the API into focused endpoints for risk scoring, dependency auditing, compatibility checks, and AI conflict resolution.',
-      ],
-      outcome: 'Built and deployed during HackIllinois 2026.',
+      outcome: 'Shipped to real student users, with 100+ RSOs on one platform.',
     },
   },
   {
     id: 'spoonbot',
     title: 'SpoonBot',
-    summary: 'An allergy-friendly recipe recommender chatbot.',
+    summary: 'An allergy-aware recipe chatbot built on the Spoonacular API and Gemini.',
     description:
-      'A Streamlit app that maps a user’s allergy constraints to dynamic Spoonacular API queries, then uses Google Gemini to parse complex JSON into clean, structured recipes.',
+      'A Streamlit app that turns allergy checkboxes into Spoonacular complexSearch queries, fetches full recipe details for each hit, and falls back to a streaming Gemini 2.5 Flash chat for general cooking questions.',
     audience: 'People with food allergies who are tired of checking every ingredient by hand.',
     role: 'Developer',
     context: 'Oct 2025',
-    stack: ['Python', 'Streamlit', 'Gemini', 'Spoonacular API', 'JSON'],
+    stack: ['Python', 'Streamlit', 'Spoonacular API', 'Gemini 2.5 Flash', 'requests', 'JSON'],
     skills: ['python', 'llm', 'rest'],
     links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/SpoonBot' }],
+    caseStudy: {
+      problem: 'Recipe search ignores allergies, so people with intolerances end up screening every ingredient list by hand.',
+      built:
+        'A Streamlit chat UI with sidebar allergy filters, a Spoonacular integration (complexSearch, then a per-recipe information call), and a Gemini chat session for everything that isn’t a recipe request.',
+      decisions: [
+        'Mapped the selected allergies straight onto Spoonacular’s intolerances parameter, so unsafe recipes are filtered out by the API instead of after the fact.',
+        'Parsed Spoonacular’s nested JSON (extendedIngredients, analyzedInstructions) into clean ingredient lists and numbered steps.',
+        'Routed recipe requests to Spoonacular and everything else to Gemini, streaming Gemini’s replies so answers appear as they generate.',
+        'Kept the conversation in st.session_state so chat history survives Streamlit’s reruns.',
+      ],
+      outcome: 'A working chatbot that returns three allergy-safe recipes per request, with full ingredients and steps.',
+    },
   },
   {
     id: 'travel-planner',
     title: 'AI Travel Planner',
     summary: 'An agentic, cost-optimizing trip planner for budget-conscious college students.',
     description:
-      'Combines retrieval-augmented generation with real-time flight and hotel APIs to plan trips around a student budget.',
+      'An LLM agent that grounds its plans in retrieval-augmented generation and real-time flight and hotel APIs, optimizing a trip around a student’s budget.',
     audience: 'College students who want to travel without blowing their budget.',
-    role: 'Team member, CS 222',
+    role: 'Team member, CS 222', // [ADD: the part you own]
     context: 'CS 222 · Fall 2026',
-    stack: ['RAG', 'LLM agents', 'Flight & hotel APIs'],
+    stack: ['Python', 'LLM agents', 'RAG', 'Flight APIs', 'Hotel APIs'], // [ADD: confirm the exact stack]
     skills: ['llm', 'rest'],
     links: [], // [ADD: repo link when ready]
     status: 'In progress',
+    caseStudy: {
+      problem:
+        'Planning a cheap trip means juggling flight sites, hotel sites, and spreadsheets, and an LLM on its own will make up prices.',
+      built:
+        'In progress: an agent that calls real-time flight and hotel APIs and uses retrieval-augmented generation to ground its recommendations.',
+      decisions: [
+        'Ground every recommendation in live API data and retrieved context rather than the model’s memory, since prices change daily.',
+        'Optimize for the total cost of the trip under a student’s budget, not just the cheapest single flight.',
+      ],
+      outcome: 'Under active development as a CS 222 team project.',
+    },
   },
   {
     id: 'food-rec',
     title: 'Food Recommendation Pipeline',
-    summary: 'A Random Forest classifier that recommends food, backed by a Postgres schema.',
-    description: 'A team ML pipeline that trains a scikit-learn Random Forest on data stored in a Supabase PostgreSQL schema.',
+    summary: 'A scikit-learn Random Forest recommender backed by a Supabase PostgreSQL schema.',
+    description:
+      'A team ML pipeline that stores its data in a relational PostgreSQL schema on Supabase and trains a scikit-learn Random Forest classifier on it to make food recommendations.',
     audience: 'Diners deciding what to eat next.', // [ADD: confirm who this was for]
     role: 'Team member', // [ADD: what you personally built]
     context: 'Team project',
-    stack: ['Python', 'scikit-learn', 'Supabase', 'PostgreSQL', 'SQL'],
-    skills: ['python', 'ml', 'sql', 'databases'],
+    stack: ['Python', 'scikit-learn', 'Random Forest', 'Supabase', 'PostgreSQL', 'SQL'],
+    skills: ['python', 'ml', 'sql', 'databases', 'data-pipelines'],
     links: [], // [ADD: repo link]
-  },
-  {
-    id: 'portfolio',
-    title: 'This Portfolio',
-    summary: 'The site you are on, built and tested like a production app.',
-    description:
-      'React + TypeScript with a skill-lens feature, a Vitest + Testing Library suite, and a GitHub Actions pipeline that checks every pull request and deploys main to GitHub Pages.',
-    audience: 'Anyone who wants to see how I work, not just what I list.',
-    role: 'Designer & developer',
-    context: 'Oct 2026',
-    stack: ['React', 'TypeScript', 'Vite', 'Vitest', 'GitHub Actions'],
-    skills: ['javascript', 'react'],
-    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/nitya-lohiya.github.io' }],
+    caseStudy: {
+      problem: 'Recommending food well means learning from structured data about items and preferences, not hard-coded rules.',
+      built:
+        'A Supabase-hosted PostgreSQL schema that holds the data, and a scikit-learn Random Forest classifier trained on it to produce recommendations.',
+      decisions: [
+        'Kept the data in a relational schema so training and serving read from one source of truth.',
+        'Used a Random Forest, an ensemble of decision trees that handles mixed feature types and exposes feature importances.',
+      ],
+      outcome: 'A working end-to-end pipeline from database to trained model.', // [ADD: accuracy or other results]
+    },
   },
 ];
 
 export const skills = [
   { group: 'Languages', items: ['Python', 'Java', 'C++', 'JavaScript / TypeScript', 'SQL', 'Dart', 'HTML/CSS'] },
-  { group: 'Web & full-stack', items: ['React', 'Vite', 'Node.js', 'Express', 'FastAPI', 'REST APIs', 'Flutter', 'Streamlit'] },
+  {
+    group: 'Web & full-stack',
+    items: ['React', 'React Router', 'Vite', 'Node.js', 'Express', 'FastAPI', 'Pydantic', 'REST APIs', 'Flutter', 'Streamlit'],
+  },
   {
     group: 'ML & AI',
-    items: ['PyTorch', 'HuggingFace Transformers', 'scikit-learn', 'LangChain', 'RAG', 'LLM applications', 'PyKEEN', 'pyBKT'],
+    items: [
+      'PyTorch',
+      'HuggingFace Transformers',
+      'BERT fine-tuning',
+      'scikit-learn',
+      'LangChain',
+      'Ollama',
+      'RAG',
+      'NLI',
+      'PyKEEN',
+      'pyBKT',
+    ],
   },
-  { group: 'Data & infra', items: ['MySQL', 'PostgreSQL', 'Supabase', 'Firebase', 'Neo4j', 'Docker', 'Pandas', 'NumPy', 'Git'] },
-  { group: 'Statistics', items: ['Probability', 'Statistical inference', 'Hypothesis testing', 'MLE'] },
-  { group: 'Also', items: ['Product & project management', 'Technical mentoring'] },
-];
-
-export const beyond = [
   {
-    id: 'dance',
-    title: 'Bharatanatyam',
-    text: 'Over ten years of classical Indian dance. I care about the art form and its history, and about how it gets commodified.',
+    group: 'Data & infra',
+    items: ['MySQL', 'PostgreSQL', 'Supabase', 'Firebase', 'Neo4j', 'SHACL', 'Docker', 'Pandas', 'NumPy', 'Git', 'GitHub Actions'],
   },
-  { id: 'hiking', title: 'Hiking', text: 'Happiest on a trail, or anywhere I haven’t been yet.' },
-  { id: 'music', title: 'Music', text: 'A big part of my everyday life.' }, // [ADD: a genre or artist, if you'd like]
+  { group: 'Testing', items: ['Jest', 'Supertest', 'Vitest', 'React Testing Library', 'JUnit'] },
   {
-    id: 'book',
-    title: 'A first book',
-    text: 'The Fault in Our Stars was the first book I read cover to cover, and it stayed with me.',
+    group: 'Statistics',
+    items: ['Probability', 'Statistical inference', 'Hypothesis testing', 'MLE', 'Bayesian Knowledge Tracing', 'Hidden Markov models'],
   },
 ];
 
