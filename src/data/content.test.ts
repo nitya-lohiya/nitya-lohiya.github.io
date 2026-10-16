@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { audiences, experience, heroSkills, navLinks, profile, projects, skillTaxonomy } from './content';
+import { experience, focusAreas, heroSkills, navLinks, profile, projects, skillTaxonomy } from './content';
 
 const skillIds: string[] = skillTaxonomy.flatMap((g) => g.skills.map((s) => s.id));
 const work = [...experience, ...projects];
@@ -33,9 +33,18 @@ describe('site content', () => {
     expect(projects.map((p) => p.id)).not.toContain('nobe-lottery');
   });
 
-  it('points every audience card at a real section anchor', () => {
+  it('points every "What I build" card at a real section anchor', () => {
     const anchors = new Set([...experience.map((e) => `#exp-${e.id}`), ...projects.map((p) => `#project-${p.id}`)]);
-    for (const a of audiences) expect(anchors, a.href).toContain(a.href);
+    for (const f of focusAreas) expect(anchors, f.href).toContain(f.href);
+  });
+
+  it('gives every project a full "How I built it" case study and a tech stack', () => {
+    for (const p of projects) {
+      expect(p.caseStudy.problem.length, p.id).toBeGreaterThan(20);
+      expect(p.caseStudy.built.length, p.id).toBeGreaterThan(20);
+      expect(p.caseStudy.decisions.length, p.id).toBeGreaterThanOrEqual(2);
+      expect(p.stack.length, p.id).toBeGreaterThanOrEqual(4);
+    }
   });
 
   it('uses https for every external link', () => {
@@ -49,7 +58,7 @@ describe('site content', () => {
   });
 
   it('never ships an unfilled [ADD: ...] placeholder or the old nickname as visible text', () => {
-    const visible = JSON.stringify({ projects, experience, profile, audiences });
+    const visible = JSON.stringify({ projects, experience, profile, focusAreas });
     expect(visible).not.toMatch(/\[ADD/);
     expect(visible).not.toMatch(/\bNits\b/);
   });

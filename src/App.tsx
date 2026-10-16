@@ -1,7 +1,7 @@
 import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
 import { Nav } from './components/Nav';
-import { About, Beyond, Contact, Experience, Projects, Resume, Skills } from './components/Sections';
+import { About, Contact, Experience, Projects, Resume, Skills } from './components/Sections';
 import { LensProvider } from './features/skill-lens/LensContext';
 import { LensPill } from './features/skill-lens/LensPill';
 import { useReveal } from './hooks/useReveal';
@@ -21,7 +21,6 @@ export default function App() {
         <Projects />
         <Skills />
         <Resume />
-        <Beyond />
         <Contact />
       </main>
       <Footer />

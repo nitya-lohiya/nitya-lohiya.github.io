@@ -1,4 +1,4 @@
-import { audiences, profile } from '../data/content';
+import { focusAreas, profile } from '../data/content';
 import { HeroGraph } from '../features/skill-lens/HeroGraph';
 import { GitHubIcon, LinkedInIcon } from './Icons';
 
@@ -45,17 +45,16 @@ export function Hero() {
         <HeroGraph />
       </div>
 
-      <div className="audiences">
-        <h2 className="audiences__title">Who I build for</h2>
-        <ul className="audiences__list">
-          {audiences.map((a, i) => (
-            <li key={a.who}>
-              <a href={a.href} className="audience">
-                <span className="audience__index" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="audience__who">{a.who}</span>
-                <span className="audience__what">{a.what}</span>
+      <div className="focus">
+        <h2 className="focus__title">What I build</h2>
+        <ul className="focus__list">
+          {focusAreas.map((f) => (
+            <li key={f.area}>
+              <a href={f.href} className="focus-card">
+                <span className="focus-card__metric">{f.metric}</span>
+                <span className="focus-card__metric-label">{f.metricLabel}</span>
+                <span className="focus-card__area">{f.area}</span>
+                <span className="focus-card__detail">{f.detail}</span>
               </a>
             </li>
           ))}

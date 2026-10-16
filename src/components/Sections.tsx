@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { beyond, bio, education, profile, quickFacts, skills } from '../data/content';
+import { bio, education, profile, quickFacts, skills } from '../data/content';
 import { ExperienceTimeline } from '../features/skill-lens/ExperienceTimeline';
 import { LensPanel } from '../features/skill-lens/LensPanel';
 import { ProjectGallery } from '../features/skill-lens/ProjectGallery';
@@ -8,7 +8,7 @@ import { Section } from './Section';
 
 export function About() {
   return (
-    <Section id="about" index="01" eyebrow="About" title="I build for the people on the other side of the screen.">
+    <Section id="about" index="01" eyebrow="About" title="Models, data, and the code that ships them.">
       <div className="about">
         <div className="about__bio reveal">
           {bio.map((p) => (
@@ -70,7 +70,7 @@ export function Experience() {
       index="02"
       eyebrow="Experience"
       title="Where I’ve been building."
-      intro="Every role started with a group of people and a problem in their way. Use the skill lens to see where each tool shows up."
+      intro="Internships, research, and team leadership, with the stack behind each one. Use the skill lens to see where each tool shows up."
     >
       <div className="reveal">
         <LensPanel />
@@ -87,7 +87,7 @@ export function Projects() {
       index="03"
       eyebrow="Projects"
       title="Things I’ve made on the side."
-      intro="Hackathon builds, class projects, and team apps. Each one started with someone who needed it. The skill lens above filters these too."
+      intro="Hackathon builds, class projects, and team apps. Open any project to see the problem, the architecture decisions, and the outcome. The skill lens above filters these too."
     >
       <div className="reveal">
         <ProjectGallery />
@@ -142,22 +142,6 @@ export function Resume() {
   );
 }
 
-export function Beyond() {
-  return (
-    <Section id="beyond" index="06" eyebrow="Beyond the resume" title="The person behind the commits.">
-      <ul className="beyond">
-        {beyond.map((b) => (
-          <li key={b.id} className={`beyond__card beyond__card--${b.id} reveal`}>
-            <span className="beyond__glyph" aria-hidden="true" />
-            <h3>{b.title}</h3>
-            <p>{b.text}</p>
-          </li>
-        ))}
-      </ul>
-    </Section>
-  );
-}
-
 export function Contact() {
   const [copied, setCopied] = useState(false);
   const copy = async () => {
@@ -171,7 +155,7 @@ export function Contact() {
   };
 
   return (
-    <Section id="contact" index="07" eyebrow="Contact" title="Let’s build something that helps.">
+    <Section id="contact" index="06" eyebrow="Contact" title="Let’s build something that helps.">
       <div className="contact reveal">
         <p className="contact__lede">
           I’m looking for software engineering and ML internships, and I’m always happy to talk about reliable AI,
