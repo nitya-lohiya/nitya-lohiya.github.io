@@ -99,9 +99,9 @@ export function Projects() {
 export function Skills() {
   return (
     <Section id="skills" index="04" eyebrow="Skills" title="What I work with." intro="The tools I reach for to get there.">
-      <div className="skills">
+      <div className="skills" data-stagger>
         {skills.map((g) => (
-          <div key={g.group} className="skills__group reveal">
+          <div key={g.group} className="skills__group">
             <h3 className="skills__title">{g.group}</h3>
             <ul className="tag-list">
               {g.items.map((s) => (

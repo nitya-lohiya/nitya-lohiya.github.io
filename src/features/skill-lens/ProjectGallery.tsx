@@ -23,8 +23,8 @@ export function ProjectGallery({ projects = allProjects, experience = allExperie
           </p>
         )}
         <ul className="project-grid" aria-label="Projects">
-          {results.map((project) => (
-            <ProjectCard key={project.id} project={project} wide={selected.length === 0 && Boolean(project.featured)} />
+          {results.map((project, i) => (
+            <ProjectCard key={project.id} index={i} project={project} wide={selected.length === 0 && Boolean(project.featured)} />
           ))}
         </ul>
       </>

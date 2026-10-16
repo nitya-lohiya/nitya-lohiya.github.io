@@ -22,6 +22,13 @@
   --max: 1120px;
   --gutter: clamp(16px, 4vw, 32px);
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* Motion dials: raise or lower to taste (0 turns an effect off). */
+  --motion-stagger: 70ms; /* delay between cascading items */
+  --motion-intro: 1; /* scales hero intro delays */
+  --tilt-lift: -4px; /* how far cards rise on hover */
+  --glow-strength: 9%; /* cursor spotlight on cards */
+  --bg-blob-opacity: 0.55; /* hero background glow */
   color-scheme: light;
 }
 
@@ -314,9 +321,8 @@ img {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
   backdrop-filter: saturate(1.4) blur(14px);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
 .nav__progress {
@@ -325,7 +331,7 @@ img {
   right: 0;
   bottom: -1px;
   height: 2px;
-  background: var(--accent);
+  background: linear-gradient(90deg, var(--accent), var(--teal));
   transform-origin: left;
 }
 .nav__inner {
@@ -376,9 +382,26 @@ img {
 .nav__links a:hover {
   color: var(--ink);
 }
+.nav__links {
+  position: relative;
+}
 .nav__links a.is-active {
   color: var(--ink);
+}
+.nav__pill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 999px;
   background: var(--bg-sunken);
+  box-shadow: inset 0 0 0 1px var(--line);
+  z-index: -1;
+  transition:
+    transform 0.45s var(--ease-spring),
+    width 0.45s var(--ease-spring),
+    opacity 0.3s var(--ease);
+  pointer-events: none;
 }
 .nav__actions {
   display: flex;
@@ -484,7 +507,9 @@ img {
   stroke-width: 1.5;
   stroke-dasharray: 4 6;
   opacity: 0.45;
-  animation: flow 6s linear infinite;
+  animation:
+    edge-in 0.9s var(--ease) calc((0.7s + var(--i, 0) * 0.08s) * var(--motion-intro)) backwards,
+    flow 6s linear calc(var(--i, 0) * 0.5s) infinite;
   transition: opacity 0.3s var(--ease), stroke-width 0.3s var(--ease);
 }
 .hero-graph .edge.is-lit {
@@ -537,7 +562,9 @@ img {
   white-space: nowrap;
   cursor: pointer;
   box-shadow: var(--shadow);
-  animation: float 6s ease-in-out infinite;
+  animation:
+    node-in 0.7s var(--ease-spring) calc((0.9s + var(--i, 0) * 0.09s) * var(--motion-intro)) backwards,
+    float 6s ease-in-out calc(var(--i, 0) * 0.35s) infinite;
   transition:
     background-color 0.25s var(--ease),
     border-color 0.25s var(--ease),
@@ -648,7 +675,6 @@ img {
   transition: transform 0.35s var(--ease);
 }
 .focus-card:hover {
-  transform: translateY(-3px);
   box-shadow: var(--shadow-lift);
   border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
 }
@@ -909,7 +935,6 @@ img {
 }
 .timeline__card:hover {
   box-shadow: var(--shadow-lift);
-  transform: translateY(-2px);
 }
 .timeline__role {
   font-size: 1.25rem;
@@ -1131,9 +1156,10 @@ img {
   gap: 20px;
 }
 .project-card {
-  animation: card-in 0.4s var(--ease) both;
+  animation: card-in 0.55s var(--ease) calc(var(--i, 0) * var(--motion-stagger)) both;
 }
 .project-card article {
+  position: relative;
   container-type: inline-size;
   min-width: 0;
   height: 100%;
@@ -1150,7 +1176,6 @@ img {
     border-color 0.25s var(--ease);
 }
 .project-card article:hover {
-  transform: translateY(-4px);
   box-shadow: var(--shadow-lift);
   border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
 }
@@ -1481,12 +1506,15 @@ img {
 .timeline__item {
   transition: opacity 0.35s var(--ease), filter 0.35s var(--ease);
 }
-.timeline__item.is-dim {
+.timeline__item.is-dim,
+.js-reveal .timeline__item.reveal.is-dim {
   opacity: 0.35;
   filter: saturate(0.3);
 }
 .timeline__item.is-dim:hover,
-.timeline__item.is-dim:focus-within {
+.timeline__item.is-dim:focus-within,
+.js-reveal .timeline__item.reveal.is-dim:hover,
+.js-reveal .timeline__item.reveal.is-dim:focus-within {
   opacity: 0.8;
 }
 .timeline__item.is-lit .timeline__card {
@@ -1584,6 +1612,338 @@ img {
   }
 }
 
+
+/* =====================================================================
+   Motion layer. Everything that makes the page move lives here, and all of
+   it is switched off under prefers-reduced-motion at the bottom of the file.
+   Tune the dials (--motion-*, --tilt-lift, --glow-strength, --bg-blob-opacity)
+   in :root at the top.
+   ===================================================================== */
+
+/* Page intro: the nav settles in, the name types itself, then the rest follows. */
+.nav {
+  animation: fade-down 0.6s var(--ease) backwards;
+}
+.intro {
+  animation: fade-up 0.8s var(--ease) backwards;
+}
+.intro--1 { animation-delay: calc(0.05s * var(--motion-intro)); }
+.intro--2 { animation-delay: calc(0.55s * var(--motion-intro)); }
+.intro--3 { animation-delay: calc(0.65s * var(--motion-intro)); }
+.intro--4 { animation-delay: calc(0.75s * var(--motion-intro)); }
+.hero__name {
+  display: inline-block;
+}
+.hero__char {
+  display: inline-block;
+  animation: char-in 0.75s var(--ease) backwards;
+  animation-delay: calc((0.15s + var(--i, 0) * 0.035s) * var(--motion-intro));
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+}
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-100%); }
+}
+@keyframes char-in {
+  from { opacity: 0; transform: translateY(0.45em) rotate(6deg); filter: blur(6px); }
+}
+@keyframes edge-in {
+  from { opacity: 0; }
+}
+@keyframes node-in {
+  from { opacity: 0; scale: 0.6; }
+}
+
+/* Key phrase: a slow accent-to-teal shimmer. */
+.hero__tagline em {
+  background: linear-gradient(100deg, var(--accent) 20%, var(--teal) 50%, var(--accent) 80%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 9s linear infinite;
+}
+@keyframes shimmer {
+  to { background-position: -220% 0; }
+}
+
+/* Hero background: three soft glows drifting on their own, plus a dot grid. The whole layer
+   leans a few pixels toward the cursor (--px/--py from usePointerEffects). */
+.hero-wrap {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute;
+  inset: -40px;
+  z-index: -1;
+  pointer-events: none;
+  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0);
+  transition: transform 0.6s var(--ease);
+}
+.hero-bg__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: var(--bg-blob-opacity);
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.hero-bg__blob--a {
+  width: 42vw;
+  height: 42vw;
+  max-width: 560px;
+  max-height: 560px;
+  right: 2%;
+  top: 4%;
+  background: color-mix(in srgb, var(--accent) 38%, transparent);
+}
+.hero-bg__blob--b {
+  width: 34vw;
+  height: 34vw;
+  max-width: 460px;
+  max-height: 460px;
+  right: 24%;
+  top: 34%;
+  background: color-mix(in srgb, var(--teal) 30%, transparent);
+  animation-duration: 28s;
+  animation-delay: -6s;
+}
+.hero-bg__blob--c {
+  width: 26vw;
+  height: 26vw;
+  max-width: 340px;
+  max-height: 340px;
+  left: -4%;
+  bottom: 6%;
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  animation-duration: 32s;
+  animation-delay: -12s;
+}
+@keyframes drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6%, 8%) scale(1.08); }
+  100% { transform: translate(5%, -6%) scale(0.95); }
+}
+.hero-bg__grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 16%, transparent) 1px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 65% 35%, #000 10%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 60% at 65% 35%, #000 10%, transparent 75%);
+  transform: translate3d(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 6px), 0);
+  transition: transform 0.6s var(--ease);
+}
+
+/* Hero graph center: a slow breathing ring. */
+.hero-graph__center {
+  animation:
+    node-in 0.8s var(--ease-spring) calc(0.6s * var(--motion-intro)) backwards,
+    breathe 4.5s ease-in-out 1.6s infinite;
+}
+@keyframes breathe {
+  50% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent) 12%, transparent); }
+}
+
+/* Cards: lift, lean toward the cursor (.tilt), and catch a soft spotlight (.tilt and .spot). */
+.tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+  will-change: transform;
+}
+.tilt:hover {
+  --lift: var(--tilt-lift);
+}
+.tilt:hover,
+.spot:hover {
+  background-image: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--accent) var(--glow-strength), transparent),
+    transparent 65%
+  );
+}
+
+/* Project glyph: a tiny graph of the project's skills; lit nodes follow the skill lens. */
+.glyph {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 46px;
+  height: 46px;
+  overflow: visible;
+  transition: transform 1.2s var(--ease);
+}
+.project-card article:hover .glyph {
+  transform: rotate(30deg);
+}
+.glyph__ring {
+  fill: none;
+  stroke: var(--line);
+  stroke-dasharray: 2 3;
+}
+.glyph__edge {
+  stroke: var(--line);
+  stroke-width: 1.2;
+  transition: stroke 0.3s var(--ease);
+}
+.glyph__node {
+  fill: var(--bg-raised);
+  stroke: var(--teal);
+  stroke-width: 1.6;
+  transition: r 0.3s var(--ease-spring), fill 0.3s var(--ease);
+}
+.glyph__center {
+  fill: var(--accent);
+}
+.glyph .is-lit .glyph__node {
+  fill: var(--teal);
+}
+.glyph .is-lit .glyph__edge {
+  stroke: var(--teal);
+}
+.project-card__meta,
+.project-card__title {
+  padding-right: 56px;
+}
+
+/* "How I built it": the panel unfolds instead of snapping open. */
+.case-study[open] dl {
+  animation: unfold 0.45s var(--ease) both;
+}
+@keyframes unfold {
+  from { opacity: 0; transform: translateY(-8px); }
+}
+@supports (interpolate-size: allow-keywords) {
+  .case-study {
+    interpolate-size: allow-keywords;
+  }
+  .case-study::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 0.45s var(--ease),
+      content-visibility 0.45s allow-discrete;
+  }
+  .case-study[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* Buttons and links: a light sweep across the primary button, arrows nudge forward. */
+.btn--primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease);
+}
+.btn--primary:hover::after {
+  transform: translateX(120%);
+}
+.text-link svg,
+.btn svg {
+  transition: transform 0.25s var(--ease);
+}
+.text-link:hover svg {
+  transform: translate(2px, -2px);
+}
+.btn:hover svg {
+  transform: translateY(1px);
+}
+.chip:hover .chip__dot,
+.graph-node:hover .graph-node__dot {
+  background: var(--teal);
+}
+
+/* Signature divider: a Kanjeevaram temple border that unrolls from the center. */
+.section {
+  position: relative;
+}
+.temple-border {
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  translate: -50% 0;
+  width: min(var(--max), 100% - 2 * var(--gutter));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.temple-border__band {
+  flex: 1;
+  height: 9px;
+  background: linear-gradient(to left, var(--accent), transparent);
+  opacity: 0.55;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9'%3E%3Cpath d='M0 9L6 1L12 9Z'/%3E%3C/svg%3E") repeat-x left center / 12px 9px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9'%3E%3Cpath d='M0 9L6 1L12 9Z'/%3E%3C/svg%3E") repeat-x left center / 12px 9px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 1.2s var(--ease) 0.15s;
+}
+.temple-border__band--right {
+  background: linear-gradient(to right, var(--accent), transparent);
+  transform-origin: left;
+}
+.temple-border__center {
+  width: 10px;
+  height: 10px;
+  rotate: 45deg;
+  border: 2px solid var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.temple-border.is-visible .temple-border__band,
+html:not(.js-reveal) .temple-border__band {
+  transform: scaleX(1);
+}
+
+/* Cascades: children of [data-stagger] enter one after another. */
+.js-reveal [data-stagger] > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
+  transition-delay: calc(var(--i, 0) * var(--motion-stagger));
+}
+.js-reveal [data-stagger].is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Theme switch: the new theme grows out of the toggle as a circle (View Transitions API),
+   or cross-fades where that isn't supported. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  animation: theme-reveal 0.6s var(--ease);
+}
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0)); }
+  to { clip-path: circle(150vmax at var(--vt-x, 100%) var(--vt-y, 0)); }
+}
+.theme-fade,
+.theme-fade * {
+  transition:
+    background-color 0.4s var(--ease),
+    color 0.4s var(--ease),
+    border-color 0.4s var(--ease) !important;
+}
+
 /* ---------- Scroll reveal ---------- */
 .js-reveal .reveal {
   opacity: 0;
@@ -1607,6 +1967,24 @@ img {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-delay: 0s !important;
+  }
+  .js-reveal [data-stagger] > *,
+  .temple-border__band {
+    opacity: 1;
+    transform: none;
+  }
+  .temple-border__band {
+    opacity: 0.55;
+  }
+  .hero-bg,
+  .hero-bg__grid,
+  .tilt {
+    transform: none !important;
+  }
+  .hero-bg__blob {
+    animation: none !important;
   }
   .js-reveal .reveal {
     opacity: 1;

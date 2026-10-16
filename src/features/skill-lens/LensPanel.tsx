@@ -44,7 +44,7 @@ export function LensPanel({ experience = allExperience, projects = allProjects }
             <span className="lens-panel__group-label" aria-hidden="true">
               {group.group}
             </span>
-            <ul className="chip-list" aria-label={group.group}>
+            <ul className="chip-list" aria-label={group.group} data-stagger>
               {group.skills.map((skill) => {
                 const pressed = selected.includes(skill.id);
                 const count = counts[skill.id] ?? 0;

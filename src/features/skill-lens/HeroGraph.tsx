@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { experience as allExperience, heroSkills, projects as allProjects } from '../../data/content';
 import { filterProjects, joinLabels } from './explorer';
 import { countLabel, skillLabel } from './labels';
@@ -29,7 +30,17 @@ export function HeroGraph({ skills = heroSkills, experience = allExperience, pro
         <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
           {nodes.map((n, i) => {
             const next = nodes[(i + 1) % nodes.length]!;
-            return <line key={`ring-${n.id}`} x1={n.x} y1={n.y} x2={next.x} y2={next.y} className="edge edge--ring" />;
+            return (
+              <line
+                key={`ring-${n.id}`}
+                x1={n.x}
+                y1={n.y}
+                x2={next.x}
+                y2={next.y}
+                className="edge edge--ring"
+                style={{ '--i': i } as CSSProperties}
+              />
+            );
           })}
           {nodes.map((n, i) => (
             <line
@@ -39,7 +50,7 @@ export function HeroGraph({ skills = heroSkills, experience = allExperience, pro
               x2={n.x}
               y2={n.y}
               className={`edge${selected.includes(n.id) ? ' is-lit' : ''}`}
-              style={{ animationDelay: `${i * 0.5}s` }}
+              style={{ '--i': i } as CSSProperties}
             />
           ))}
         </svg>
@@ -53,7 +64,7 @@ export function HeroGraph({ skills = heroSkills, experience = allExperience, pro
               key={n.id}
               type="button"
               className={`graph-node${on ? ' is-on' : ''}`}
-              style={{ left: `${n.x / 4}%`, top: `${n.y / 4}%`, animationDelay: `${i * 0.35}s` }}
+              style={{ left: `${n.x / 4}%`, top: `${n.y / 4}%`, '--i': i } as CSSProperties}
               aria-pressed={on}
               onClick={() => toggle(n.id)}
             >
