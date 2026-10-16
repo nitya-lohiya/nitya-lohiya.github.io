@@ -44,6 +44,17 @@ describe('App', () => {
     expect(screen.queryByTestId('lens-pill')).toBeNull();
   });
 
+  it('keeps the animated name and count-up metrics readable by screen readers', () => {
+    render(<App />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName('Nitya Lohiya');
+    for (const value of ['119', '96%', '2.3→0.9ms', '8']) expect(screen.getByText(value, { selector: '.sr-only' })).toBeInTheDocument();
+  });
+
+  it('marks every section with the temple-border divider', () => {
+    const { container } = render(<App />);
+    expect(container.querySelectorAll('section.section > .temple-border').length).toBe(navLinks.length);
+  });
+
   it('offers a resume download', () => {
     render(<App />);
     expect(screen.getByRole('link', { name: /download pdf/i })).toHaveAttribute('download');

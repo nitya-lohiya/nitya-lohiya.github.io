@@ -78,6 +78,28 @@ All copy lives in **[`src/data/content.ts`](src/data/content.ts)**: profile, bio
 - **LinkedIn:** set `profile.linkedin`. Empty fields are hidden on the site.
 - **Theme colors:** change the tokens at the top of [`src/styles/global.css`](src/styles/global.css), for both light and dark.
 
+## Motion and visual effects
+
+Everything is plain CSS plus two small hooks, with no animation library. All of it is switched off under `prefers-reduced-motion`, which shows a calm, static page with final values.
+
+| Effect | Where | How to tune or turn off |
+| --- | --- | --- |
+| Page intro (nav, name typed letter by letter, copy fading up) | `.intro`, `.hero__char` in `global.css`, `RevealName` in `Hero.tsx` | `--motion-intro` (0 = instant) |
+| Hero background glows + dot grid, leaning toward the cursor | `.hero-bg*` in `global.css`, `usePointerEffects.ts` | `--bg-blob-opacity` (0 = off) |
+| Hero graph draws itself in, nodes float, center breathes | `.hero-graph*`, `@keyframes node-in / edge-in / breathe` | edit the keyframe durations |
+| Count-up metrics in "What I build" | `CountUp.tsx`, `lib/countUp.ts` | `duration` prop |
+| Scroll reveals and cascades | `useReveal.ts`, `[data-stagger]` in `global.css` | `--motion-stagger` (0 = no cascade) |
+| Card lift, tilt, and cursor spotlight | `.tilt` / `.spot`, `usePointerEffects.ts` | `--tilt-lift`, `--glow-strength`, `MAX_TILT` |
+| Sliding nav highlight, gradient progress bar | `.nav__pill`, `Nav.tsx` | transition on `.nav__pill` |
+| Theme sweep from the toggle (View Transitions API, cross-fade fallback) | `useTheme.ts`, `::view-transition-*` | delete the `::view-transition-new` rule for a plain fade |
+| "How I built it" panels unfold | `.case-study` | `unfold` keyframe |
+| Project glyphs (mini skill graphs that light up with the lens) | `SkillGlyph` in `ProjectCard.tsx`, `.glyph*` | remove `<SkillGlyph />` |
+| **Signature motif:** the Kanjeevaram "temple border" divider at the top of each section | `TempleBorder.tsx`, `.temple-border*` | the SVG triangle in the `mask` URL, the band gradient colors |
+
+Tilt and parallax only run on mouse or trackpad (`hover: hover` and `pointer: fine`), never on touch screens. A single delegated, `requestAnimationFrame`-throttled pointer listener drives all of them.
+
+**Lighthouse** (production build, mobile simulation): Performance 92–94, Accessibility 100, Best Practices 100, SEO 100. Total blocking time 0 ms, layout shift 0.
+
 ## Accessibility & performance notes
 
 - Semantic landmarks, a skip link, one `h1`, labelled sections, and visible focus rings.

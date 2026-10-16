@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export type Theme = 'light' | 'dark';
 export const THEME_KEY = 'theme';
@@ -23,16 +24,36 @@ export function useTheme() {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  const toggle = useCallback(() => {
-    setTheme((t) => {
-      const next = t === 'dark' ? 'light' : 'dark';
-      try {
-        localStorage.setItem(THEME_KEY, next);
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
+  /**
+   * Switches theme. Where the View Transitions API exists, the new theme sweeps in as a
+   * circle growing from the toggle (origin passed as x/y); elsewhere colors cross-fade.
+   */
+  const toggle = useCallback((origin?: { x: number; y: number }) => {
+    const flip = () =>
+      setTheme((t) => {
+        const next = t === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem(THEME_KEY, next);
+        } catch {
+          /* ignore */
+        }
+        return next;
+      });
+
+    const root = document.documentElement;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (!document.startViewTransition || reduced) {
+      root.classList.add('theme-fade');
+      flip();
+      window.setTimeout(() => root.classList.remove('theme-fade'), 450);
+      return;
+    }
+    if (origin) {
+      root.style.setProperty('--vt-x', `${origin.x}px`);
+      root.style.setProperty('--vt-y', `${origin.y}px`);
+    }
+    document.startViewTransition(() => flushSync(flip));
   }, []);
 
   return { theme, toggle };

@@ -18,7 +18,7 @@ export function ExperienceTimeline({ experience = allExperience }: Props) {
               <span>{e.dates}</span>
               <span className="timeline__where">{e.location}</span>
             </div>
-            <article className="timeline__card" aria-labelledby={`exp-${e.id}-title`}>
+            <article className="timeline__card spot" aria-labelledby={`exp-${e.id}-title`}>
               <header className="timeline__head">
                 <div>
                   <h3 id={`exp-${e.id}-title`} className="timeline__role">
