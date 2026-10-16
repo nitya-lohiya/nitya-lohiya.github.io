@@ -46,7 +46,7 @@ export const focusAreas = [
     metric: '96%',
     metricLabel: 'test accuracy, 3 classes',
     detail: 'bert-base-uncased fine-tuned with AdamW and a linear LR schedule, behind a confidence-gated rule layer.',
-    href: '#exp-acm',
+    href: '#project-email-classifier',
   },
   {
     area: 'Full-stack + SQL performance',
@@ -321,6 +321,44 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    id: 'email-classifier',
+    title: 'Gmail BERT Email Classifier',
+    summary: 'A fine-tuned BERT model that sorts a live Gmail inbox into High, Medium, and Low priority, served through FastAPI.',
+    description:
+      'bert-base-uncased fine-tuned to 96% test accuracy on 2,697 held-out emails, wrapped in a confidence-gated rule layer and a FastAPI service with single, batch, and Gmail endpoints, plus a React + Vite inbox UI.',
+    audience: 'Anyone whose inbox buries the emails that actually matter.',
+    role: 'Project Manager, team of 6',
+    context: 'ACM SIG AI @ UIUC · Spring 2026',
+    stack: [
+      'Python',
+      'PyTorch',
+      'HuggingFace Transformers',
+      'bert-base-uncased',
+      'FastAPI',
+      'Pydantic',
+      'Gmail API (OAuth)',
+      'React',
+      'Vite',
+      'Pandas',
+    ],
+    skills: ['python', 'ml', 'pytorch', 'fastapi', 'rest', 'react', 'data-pipelines', 'fullstack'],
+    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/Personalized-Email_Classifier' }],
+    featured: true,
+    caseStudy: {
+      problem:
+        'Inboxes mix one-time passcodes and security alerts with promotions and social pings, and keyword filters miss context. Filing a verification code as low priority is the mistake that actually hurts.',
+      built:
+        'A data pipeline that maps a HuggingFace email dataset (10,780 training and 2,697 test emails) from 6 categories into 3 priorities, a fine-tuned bert-base-uncased classifier, a FastAPI service with /predict, /classify_batch, and Gmail OAuth endpoints, and a React + Vite UI that sorts a live inbox into priority columns.',
+      decisions: [
+        'Fine-tuned a pretrained bert-base-uncased (110M parameters) instead of training from scratch: AdamW at a 2e-5 learning rate, a linear schedule, batch size 16, 128-token inputs, and 3 epochs.',
+        'Layered rules on top of BERT without replacing it. Security signals (verification codes, password resets, account-security senders) always route to High, while softer keyword and sender rules only break ties when BERT’s softmax confidence is below 0.70. Every prediction records whether it came from BERT or a rule.',
+        'Validated at the API edge: empty text returns a 400, batches are capped at 100 emails, and each response reports per-email latency.',
+        'Requested read-only Gmail access (gmail.readonly) through OAuth, and fetched messages in parallel with a thread pool before classifying them.',
+      ],
+      outcome: '96% test accuracy across all three priority classes in 3 epochs, running end to end from a Gmail inbox to a sorted priority view.',
+    },
+  },
   {
     id: 'osli',
     title: 'OSLI: Open-Source License Intelligence',

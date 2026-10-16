@@ -27,10 +27,11 @@ describe('site content', () => {
     }
   });
 
-  it('does not repeat work experience as a project', () => {
+  it('only lists internship and club work as a project when it has its own technical write-up', () => {
     const orgs = experience.map((e) => e.org.toLowerCase());
     for (const p of projects) for (const org of orgs) expect(p.title.toLowerCase()).not.toContain(org);
     expect(projects.map((p) => p.id)).not.toContain('nobe-lottery');
+    expect(projects.find((p) => p.id === 'email-classifier')?.featured).toBe(true);
   });
 
   it('points every "What I build" card at a real section anchor', () => {
