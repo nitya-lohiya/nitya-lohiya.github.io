@@ -1,20 +1,41 @@
 import { describe, expect, it } from 'vitest';
-import { experience, navLinks, profile, projects, skillTaxonomy } from './content';
+import { audiences, experience, heroSkills, navLinks, profile, projects, skillTaxonomy } from './content';
 
-const skillIds = skillTaxonomy.flatMap((g) => g.skills.map((s) => s.id));
+const skillIds: string[] = skillTaxonomy.flatMap((g) => g.skills.map((s) => s.id));
+const work = [...experience, ...projects];
 
 describe('site content', () => {
-  it('has unique project ids', () => {
-    const ids = projects.map((p) => p.id);
+  it('has unique ids across experience and projects', () => {
+    const ids = [...experience.map((e) => `exp-${e.id}`), ...projects.map((p) => `project-${p.id}`)];
     expect(new Set(ids).size).toBe(ids.length);
   });
 
   it('only uses skills defined in the taxonomy', () => {
-    for (const p of projects) for (const s of p.skills) expect(skillIds, `${p.id} uses ${s}`).toContain(s);
+    for (const w of work) for (const s of w.skills) expect(skillIds, `${w.id} uses ${s}`).toContain(s);
+    for (const s of heroSkills) expect(skillIds).toContain(s);
   });
 
-  it('gives every taxonomy skill at least one project, so no filter is a dead end by default', () => {
-    for (const id of skillIds) expect(projects.some((p) => p.skills.includes(id)), id).toBe(true);
+  it('connects every taxonomy skill to at least one piece of work', () => {
+    for (const id of skillIds) expect(work.some((w) => (w.skills as string[]).includes(id)), id).toBe(true);
+  });
+
+  it('gives every role an audience, real detail, and a tech stack', () => {
+    for (const e of experience) {
+      expect(e.audience.length, e.id).toBeGreaterThan(10);
+      expect(e.points.length, e.id).toBeGreaterThan(0);
+      expect(e.tech.length, e.id).toBeGreaterThan(0);
+    }
+  });
+
+  it('does not repeat work experience as a project', () => {
+    const orgs = experience.map((e) => e.org.toLowerCase());
+    for (const p of projects) for (const org of orgs) expect(p.title.toLowerCase()).not.toContain(org);
+    expect(projects.map((p) => p.id)).not.toContain('nobe-lottery');
+  });
+
+  it('points every audience card at a real section anchor', () => {
+    const anchors = new Set([...experience.map((e) => `#exp-${e.id}`), ...projects.map((p) => `#project-${p.id}`)]);
+    for (const a of audiences) expect(anchors, a.href).toContain(a.href);
   });
 
   it('uses https for every external link', () => {
@@ -27,13 +48,10 @@ describe('site content', () => {
     for (const href of links) expect(href).toMatch(/^https:\/\//);
   });
 
-  it('never ships an unfilled [ADD: ...] placeholder as visible text', () => {
-    const visible = JSON.stringify({ projects, experience, profile });
+  it('never ships an unfilled [ADD: ...] placeholder or the old nickname as visible text', () => {
+    const visible = JSON.stringify({ projects, experience, profile, audiences });
     expect(visible).not.toMatch(/\[ADD/);
-  });
-
-  it('features the strongest work first', () => {
-    expect(projects[0]?.featured).toBe(true);
+    expect(visible).not.toMatch(/\bNits\b/);
   });
 
   it('links the resume from /public', () => {
