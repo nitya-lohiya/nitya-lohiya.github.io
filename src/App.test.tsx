@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
 import { navLinks } from './data/content';
 
@@ -53,6 +53,38 @@ describe('App', () => {
   it('marks every section with the temple-border divider', () => {
     const { container } = render(<App />);
     expect(container.querySelectorAll('section.section > .temple-border').length).toBe(navLinks.length);
+  });
+
+  describe('with scroll reveals running', () => {
+    // jsdom has no IntersectionObserver; fake one that reports every element as on screen.
+    class VisibleObserver {
+      constructor(private cb: IntersectionObserverCallback) {}
+      observe(target: Element) {
+        this.cb([{ isIntersecting: true, target } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
+      }
+      unobserve() {}
+      disconnect() {}
+    }
+    afterEach(() => {
+      vi.unstubAllGlobals();
+      document.documentElement.classList.remove('js-reveal');
+    });
+
+    it('keeps revealed roles visible when the lens changes and after reset', async () => {
+      vi.stubGlobal('IntersectionObserver', VisibleObserver);
+      const user = userEvent.setup();
+      const { container } = render(<App />);
+      const rows = () => [...container.querySelectorAll('.timeline__row')];
+      expect(rows().length).toBeGreaterThan(0);
+      expect(rows().every((r) => r.classList.contains('is-visible'))).toBe(true);
+
+      await user.click(screen.getAllByRole('button', { name: 'Applied ML' })[0]!);
+      expect(rows().every((r) => r.classList.contains('is-visible'))).toBe(true);
+
+      await user.click(screen.getByRole('button', { name: 'Reset' }));
+      expect(rows().every((r) => r.classList.contains('is-visible'))).toBe(true);
+      expect(screen.getAllByTestId('experience-item').every((li) => li.dataset.state === 'neutral')).toBe(true);
+    });
   });
 
   it('offers a resume download', () => {

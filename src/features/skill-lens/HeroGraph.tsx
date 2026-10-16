@@ -55,7 +55,7 @@ export function HeroGraph({ skills = heroSkills, experience = allExperience, pro
           ))}
         </svg>
         <span className="hero-graph__center" aria-hidden="true">
-          Nitya
+          Core
         </span>
         {nodes.map((n, i) => {
           const on = selected.includes(n.id);
