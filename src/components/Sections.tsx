@@ -38,7 +38,7 @@ export function About() {
         <div>
           <p className="education__school">{education.school}</p>
           <p className="education__degree">
-            {education.degree} · {education.dates}
+            {education.degree}
           </p>
           <ul className="tag-list" aria-label="Honors">
             {education.honors.map((h) => (

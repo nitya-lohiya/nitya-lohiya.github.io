@@ -45,7 +45,7 @@ function HeroGraph() {
       <g className="node node--center">
         <circle cx={200} cy={200} r={34} />
         <text x={200} y={207} textAnchor="middle">
-          Nits
+          Nitya
         </text>
       </g>
     </svg>
@@ -57,11 +57,10 @@ export function Hero() {
     <section id="top" className="hero container" aria-labelledby="hero-title">
       <div className="hero__copy">
         <p className="eyebrow">
-          {profile.role} · Class of 2028
+          {profile.role}
         </p>
         <h1 id="hero-title" className="hero__title">
           {profile.name}
-          <span className="hero__nick"> (Nits)</span>
         </h1>
         <p className="hero__tagline">{profile.tagline}</p>
         <p className="hero__lede">{profile.positioning}</p>

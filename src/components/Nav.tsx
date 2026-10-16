@@ -39,7 +39,7 @@ export function Nav() {
           <span className="nav__mark" aria-hidden="true">
             n
           </span>
-          {profile.nickname}
+          {profile.name}
         </a>
 
         <ul id="nav-menu" className={`nav__links${open ? ' is-open' : ''}`}>

@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer__inner">
         <p>
-          © {new Date().getFullYear()} {profile.name}. Built by {profile.nickname} with React, Vite, and TypeScript.
+          © {new Date().getFullYear()} {profile.name}. Built with React, Vite, and TypeScript.
         </p>
         <nav aria-label="Footer">
           <ul className="footer__links">
