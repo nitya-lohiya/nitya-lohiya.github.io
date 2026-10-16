@@ -7,10 +7,8 @@
 
 export const profile = {
   name: 'Nitya Lohiya',
-  nickname: 'Nits',
   role: 'CS + Statistics @ UIUC',
   location: 'Champaign-Urbana, IL',
-  graduation: 'May 2028',
   email: 'nlohiya2@illinois.edu',
   github: 'https://github.com/nitya-lohiya',
   linkedin: '', // [ADD: LinkedIn URL, e.g. https://www.linkedin.com/in/your-handle]
@@ -26,7 +24,7 @@ export const profile = {
 } as const;
 
 export const bio: string[] = [
-  "Hi, I'm Nitya, though most people call me Nits. I study Computer Science and Statistics at UIUC, and my favorite projects are the ones I get to build all the way through: the database, the model, and the interface someone actually clicks on.",
+  "Hi, I'm Nitya. I study Computer Science and Statistics at UIUC, and my favorite projects are the ones I get to build all the way through: the database, the model, and the interface someone actually clicks on.",
   "Lately that has meant a real estate listings platform at IDX Exchange, a BERT email classifier my team pushed to 96% accuracy, and a schema-constrained knowledge graph that maps a whole Grade 6 math curriculum for an adaptive learning platform. I've also led a team as a project manager and helped intro CS students untangle their first Java bugs.",
   "The question I keep coming back to is why AI systems fail, and what it takes to make them reliable enough to deserve people's trust.",
   "Away from a keyboard, I've practiced Bharatanatyam for more than ten years, and I'm always up for a hike or somewhere I haven't been yet.",
@@ -35,7 +33,6 @@ export const bio: string[] = [
 export const quickFacts = [
   { label: 'School', value: 'University of Illinois Urbana-Champaign' },
   { label: 'Degree', value: 'B.S. Computer Science + Statistics' },
-  { label: 'Graduating', value: profile.graduation },
   { label: 'Focus', value: 'Full-stack, applied ML, reliable LLM systems' },
 ];
 
@@ -49,7 +46,6 @@ export const highlights = [
 export const education = {
   school: 'University of Illinois Urbana-Champaign',
   degree: 'B.S. in Computer Science and Statistics',
-  dates: 'Expected May 2028',
   honors: ['GPA 3.8', "Dean's List"],
   coursework: [
     'Data Structures & Algorithms (CS 225)',
