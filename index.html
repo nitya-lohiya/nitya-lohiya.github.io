@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nitya Lohiya · Software Engineer</title>
+    <meta
+      name="description"
+      content="Nitya (Nits) Lohiya is a CS + Statistics student at UIUC who builds full-stack apps and AI/ML systems, from real estate platforms to knowledge-graph learning tools."
+    />
+    <meta name="theme-color" content="#faf6ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#15120f" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href="https://nitya-lohiya.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nitya-lohiya.github.io/" />
+    <meta property="og:title" content="Nitya Lohiya · Software Engineer" />
+    <meta
+      property="og:description"
+      content="CS + Statistics @ UIUC. Full-stack apps and AI/ML systems, built to be trusted."
+    />
+    <meta name="twitter:card" content="summary" />
+    <script>
+      // Apply the saved or OS theme before first paint to avoid a flash of the wrong theme.
+      (function () {
+        var t;
+        try { t = localStorage.getItem('theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>This site needs JavaScript. You can reach Nitya at nlohiya2@illinois.edu.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
