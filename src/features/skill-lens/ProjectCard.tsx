@@ -1,23 +1,27 @@
 import type { Project } from '../../data/content';
 import { ArrowIcon } from '../../components/Icons';
 
-type Props = { project: Project; matched: string[]; wide: boolean };
+type Props = { project: Project; wide: boolean };
 
-export function ProjectCard({ project, matched, wide }: Props) {
+export function ProjectCard({ project, wide }: Props) {
   const { caseStudy } = project;
   return (
-    <li className={`project-card${wide ? ' project-card--wide' : ''}`} data-testid="project-card">
-      <article aria-labelledby={`project-${project.id}`}>
+    <li id={`project-${project.id}`} className={`project-card${wide ? ' project-card--wide' : ''}`} data-testid="project-card">
+      <article aria-labelledby={`project-${project.id}-title`}>
         <div className="project-card__meta">
           <span>{project.context}</span>
           {project.featured && <span className="badge badge--accent">Featured</span>}
           {project.status && <span className="badge">{project.status}</span>}
         </div>
-        <h3 id={`project-${project.id}`} className="project-card__title">
+        <h3 id={`project-${project.id}-title`} className="project-card__title">
           {project.title}
         </h3>
         <p className="project-card__summary">{project.summary}</p>
         <p className="project-card__desc">{project.description}</p>
+        <p className="for-line">
+          <span className="for-line__label">Built for</span>
+          {project.audience}
+        </p>
         <p className="project-card__role">
           <span className="sr-only">My role: </span>
           {project.role}
@@ -47,13 +51,11 @@ export function ProjectCard({ project, matched, wide }: Props) {
 
         <ul className="tag-list" aria-label="Tech stack">
           {project.stack.map((t) => (
-            <li key={t} className="tag">
+            <li key={t} className="tag tag--tech">
               {t}
             </li>
           ))}
         </ul>
-
-        {matched.length > 0 && <p className="project-card__match">Connected through {matched.join(' · ')}</p>}
 
         {project.links.length > 0 && (
           <div className="project-card__links">

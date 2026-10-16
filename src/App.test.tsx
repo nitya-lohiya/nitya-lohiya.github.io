@@ -31,6 +31,19 @@ describe('App', () => {
     expect(screen.getByRole('button', { name: 'Open menu' })).toHaveAttribute('aria-expanded', 'false');
   });
 
+  it('lights up experience from the hero graph and clears from the floating pill', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    expect(screen.queryByTestId('lens-pill')).toBeNull();
+    const node = screen.getAllByRole('button', { name: 'Knowledge graphs' })[0]!;
+    await user.click(node);
+    const lit = screen.getAllByTestId('experience-item').filter((li) => li.dataset.state === 'lit');
+    expect(lit.map((li) => li.id)).toEqual(['exp-itqan']);
+    expect(screen.getByTestId('lens-pill')).toHaveTextContent('Knowledge graphs');
+    await user.click(screen.getByRole('button', { name: 'Clear skill lens' }));
+    expect(screen.queryByTestId('lens-pill')).toBeNull();
+  });
+
   it('offers a resume download', () => {
     render(<App />);
     expect(screen.getByRole('link', { name: /download pdf/i })).toHaveAttribute('download');

@@ -15,32 +15,49 @@ export const profile = {
   photo: '', // [ADD: drop a photo in /public (e.g. /nitya.jpg) and put its path here]
   resume: '/Nitya_Lohiya_Resume.pdf',
 
-  // Alternatives: "From the database to the model to the button you click."
-  //               "Full-stack apps and AI systems, built to actually help people."
-  tagline: 'I build software end to end, and I care whether people can trust it.',
+  // Alternatives: "Software that makes someone's day a little easier."
+  //               "I build for the people on the other side of the screen."
+  tagline: 'I build technology that makes people’s lives better.',
   positioning:
-    'A CS + Statistics student who builds full-stack apps and AI/ML systems, from real estate listing platforms to knowledge-graph learning tools.',
-  currently: 'building a "For You" article feed at Illini Media and an after-school lottery system with NOBE.',
+    'I’m a CS + Statistics student at UIUC working across full-stack engineering, applied machine learning, and LLM systems. Every project I take on starts with the people it’s for.',
 } as const;
 
 export const bio: string[] = [
-  "Hi, I'm Nitya. I study Computer Science and Statistics at UIUC, and my favorite projects are the ones I get to build all the way through: the database, the model, and the interface someone actually clicks on.",
-  "Lately that has meant a real estate listings platform at IDX Exchange, a BERT email classifier my team pushed to 96% accuracy, and a schema-constrained knowledge graph that maps a whole Grade 6 math curriculum for an adaptive learning platform. I've also led a team as a project manager and helped intro CS students untangle their first Java bugs.",
-  "The question I keep coming back to is why AI systems fail, and what it takes to make them reliable enough to deserve people's trust.",
-  "Away from a keyboard, I've practiced Bharatanatyam for more than ten years, and I'm always up for a hike or somewhere I haven't been yet.",
+  'Hi, I’m Nitya. I study Computer Science and Statistics at UIUC, and I build technology to make people’s lives a little better: a student getting the lesson they’re actually ready for, a family getting a fair shot at an after-school spot, a student club finally getting found.',
+  'I like owning the whole path, from the data and the model to the backend and the interface someone uses. Lately that has meant knowledge graphs and recommendation engines for adaptive learning, full-stack web platforms, and fine-tuned language models.',
+  'The question I keep coming back to is why AI systems fail, and what it takes to make them reliable enough to deserve people’s trust. Along the way I’ve led a six-person engineering team and mentor intro CS students as a course assistant.',
+  'Away from a keyboard, I’ve practiced Bharatanatyam for more than ten years, and I’m always up for a hike or somewhere I haven’t been yet.',
 ];
 
 export const quickFacts = [
   { label: 'School', value: 'University of Illinois Urbana-Champaign' },
   { label: 'Degree', value: 'B.S. Computer Science + Statistics' },
   { label: 'Focus', value: 'Full-stack, applied ML, reliable LLM systems' },
+  { label: 'Based in', value: 'Champaign-Urbana, IL' },
 ];
 
-export const highlights = [
-  { value: '96%', label: 'test accuracy on a fine-tuned BERT email classifier' },
-  { value: '119', label: 'curriculum concepts mapped in a knowledge graph' },
-  { value: '6', label: 'person engineering team led as project manager' },
-  { value: '30+', label: 'intro CS students mentored as a course assistant' },
+/** "Who I build for" strip under the hero. Each entry points at the work that serves them. */
+export const audiences = [
+  {
+    who: 'Students in Egypt & the Middle East',
+    what: 'A learning platform that knows which concept each student is ready for next.',
+    href: '#exp-itqan',
+  },
+  {
+    who: 'Families at a Chicago elementary school',
+    what: 'A fairer way to hand out after-school spots, starting with the kids who need them most.',
+    href: '#exp-nobe',
+  },
+  {
+    who: '100+ student organizations at UIUC',
+    what: 'One place for students to discover them, instead of scattered posts and spreadsheets.',
+    href: '#project-rso-connect',
+  },
+  {
+    who: 'People with food allergies',
+    what: 'Recipe ideas that start from what they can’t eat.',
+    href: '#project-spoonbot',
+  },
 ];
 
 export const education = {
@@ -59,6 +76,52 @@ export const education = {
   ],
 };
 
+/**
+ * The skill vocabulary the skill lens filters on. Experience and projects list a subset of
+ * these ids in `skills`; a test fails if an id is used that is not defined here.
+ */
+export const skillTaxonomy = [
+  {
+    group: 'Languages',
+    skills: [
+      { id: 'python', label: 'Python' },
+      { id: 'javascript', label: 'JavaScript / TS' },
+      { id: 'java', label: 'Java' },
+      { id: 'sql', label: 'SQL' },
+      { id: 'dart', label: 'Dart' },
+    ],
+  },
+  {
+    group: 'Building',
+    skills: [
+      { id: 'fullstack', label: 'Full-stack' },
+      { id: 'react', label: 'React' },
+      { id: 'node', label: 'Node / Express' },
+      { id: 'fastapi', label: 'FastAPI' },
+      { id: 'rest', label: 'REST APIs' },
+      { id: 'flutter', label: 'Flutter' },
+      { id: 'docker', label: 'Docker' },
+    ],
+  },
+  {
+    group: 'Intelligence & data',
+    skills: [
+      { id: 'llm', label: 'LLM systems' },
+      { id: 'ml', label: 'Applied ML' },
+      { id: 'pytorch', label: 'PyTorch' },
+      { id: 'knowledge-graphs', label: 'Knowledge graphs' },
+      { id: 'data-pipelines', label: 'Data pipelines' },
+      { id: 'statistics', label: 'Statistics' },
+      { id: 'databases', label: 'Databases' },
+    ],
+  },
+] as const;
+
+export type SkillId = (typeof skillTaxonomy)[number]['skills'][number]['id'];
+
+/** Nodes in the interactive hero graph. Each one is a skill the lens can switch on. */
+export const heroSkills: SkillId[] = ['fullstack', 'ml', 'llm', 'statistics', 'data-pipelines', 'knowledge-graphs'];
+
 export type Experience = {
   id: string;
   role: string;
@@ -66,8 +129,10 @@ export type Experience = {
   orgNote?: string;
   dates: string;
   location: string;
+  audience: string;
   points: string[];
-  tags: string[];
+  tech: string[];
+  skills: SkillId[];
   link?: string;
   current?: boolean;
 };
@@ -75,20 +140,24 @@ export type Experience = {
 export const experience: Experience[] = [
   {
     id: 'itqan',
-    // The build brief calls this "Educational Technology Developer"; the resume says the title below.
+    // The build brief calls this "Educational Technology Developer"; the resume uses the title below.
     role: 'AI/ML Software Engineer Intern',
     org: 'ITQAN Academy',
     orgNote: 'ATLAS Internship Program',
     dates: 'May 2026 – Present',
     location: 'Champaign, IL',
     current: true,
+    audience:
+      'Students in Egypt and the Middle East learning math on a free, Khan Academy–inspired adaptive platform, with Professor Adam Osman.',
     points: [
-      'Working with Professor Adam Osman on a free, Khan Academy–inspired adaptive learning platform for students in Egypt and the Middle East.',
-      'Built a schema-constrained knowledge-graph pipeline (EDC-style extraction with LangChain + Ollama, SHACL validation, NLI checks, PyKEEN anomaly detection) covering 119 concepts across 13 units of the Grade 6 Egyptian math curriculum.',
-      'Extended the graph to the Indian NCERT and US Grade 6 curricula, and cleaned and validated it into an algorithm-ready dataset.',
-      'Designed a three-layer recommendation architecture (Bayesian Knowledge Tracing with pyBKT, Hidden Markov modeling, contextual bandits) for personalized learning paths.',
+      'Built an LLM-based knowledge-graph pipeline using schema-based Extract–Define–Canonicalize (EDC) extraction with LangChain and locally hosted models through Ollama, turning raw curriculum content into canonical concepts and prerequisite relations.',
+      'Mapped 119 concepts across 13 units of the Grade 6 Egyptian math curriculum, then extended the graph to the Indian NCERT and US Grade 6 curricula.',
+      'Validated the graph in layers: SHACL shape constraints for structure, natural language inference (NLI) to check extracted relations against the source text, and PyKEEN knowledge-graph embeddings to flag anomalous edges.',
+      'Cleaned, validated, and organized the graph data into an algorithm-ready dataset for the downstream recommendation engine.',
+      'Designed a three-layer adaptive recommendation architecture (Bayesian Knowledge Tracing with pyBKT, Hidden Markov modeling, and a contextual-bandit strategy) that personalizes learning paths from learner interaction data.',
     ],
-    tags: ['LangChain', 'Ollama', 'SHACL', 'PyKEEN', 'pyBKT', 'Neo4j'],
+    tech: ['Python', 'LangChain', 'Ollama', 'SHACL', 'NLI', 'PyKEEN', 'pyBKT', 'Neo4j', 'Knowledge graphs'],
+    skills: ['python', 'llm', 'ml', 'knowledge-graphs', 'data-pipelines', 'statistics', 'databases'],
   },
   {
     id: 'idx',
@@ -96,12 +165,15 @@ export const experience: Experience[] = [
     org: 'IDX Exchange',
     dates: 'June – August 2026',
     location: 'Remote',
+    audience: 'People browsing homes and open houses, who need listings that load fast and stay accurate.',
     points: [
-      'Built a full-stack real estate listings platform serving RETS-standard property and open-house data from MySQL 8 through a Node.js/Express REST API to a React (Vite) frontend.',
-      'Developed the Express backend with a mysql2 connection pool and environment-based configuration.',
-      'Containerized MySQL with Docker for a reproducible local development environment.',
+      'Built a full-stack real estate listings platform end to end, serving RETS-standard property and open-house data from a MySQL 8 database through a Node.js/Express REST API to a React (Vite) frontend.',
+      'Developed the Express backend with a mysql2 connection pool and environment-based configuration, exposing REST endpoints that query and serve property and open-house records.',
+      'Built the React frontend to fetch and render live property listings from the API.',
+      'Containerized MySQL with Docker so the whole stack runs the same way on any machine.',
     ],
-    tags: ['React', 'Vite', 'Node.js', 'Express', 'MySQL 8', 'Docker'],
+    tech: ['JavaScript', 'React', 'Vite', 'Node.js', 'Express', 'REST APIs', 'mysql2', 'MySQL 8', 'SQL', 'Docker'],
+    skills: ['javascript', 'react', 'node', 'rest', 'sql', 'databases', 'docker', 'fullstack'],
     link: 'https://github.com/nitya-lohiya/IDX-Exchange-SDE-s26',
   },
   {
@@ -112,26 +184,32 @@ export const experience: Experience[] = [
     dates: 'Fall 2026 – Present',
     location: 'Champaign, IL',
     current: true,
+    audience: 'Families and staff at a Chicago public elementary school.',
     points: [
-      "Part of a consulting team building an after-school program lottery system for a Chicago public elementary school, replacing a manual Google Form and spreadsheet workflow.",
-      'The system pairs a family sign-up form and an admin dashboard with a tiered, seeded lottery engine, built with student-privacy requirements (FERPA/SOPPA) in mind.',
+      'Building, as part of a consulting team, an after-school program lottery system that replaces a Google Form → spreadsheet → manual-draw workflow.',
+      'The system pairs a family-facing sign-up form and an admin dashboard with a tiered lottery engine that prioritizes students by need and carries unplaced students into the next round.',
+      'Designed around student-privacy law (FERPA and SOPPA): no third-party analytics, synthetic data only in development, and student information kept out of logs.',
+      'Work runs on an Agile cadence with weekly scrums, GitHub Issues, and branch-based pull requests.',
       // [ADD: one bullet on what YOU personally built, e.g. which tickets or screens you own]
     ],
-    tags: ['Java', 'Spring Boot', 'PostgreSQL', 'JavaScript', 'JUnit'],
+    tech: ['Java', 'Spring Boot', 'PostgreSQL', 'JavaScript', 'HTML/CSS', 'JUnit', 'Git'],
+    skills: ['java', 'javascript', 'sql', 'databases', 'fullstack'],
   },
   {
     id: 'illini-media',
     role: 'Software Developer',
     org: 'Illini Media Company',
-    orgNote: 'The Daily Illini, WPGU 107.1, and more',
+    orgNote: 'The Daily Illini, WPGU 107.1, Illio, and more',
     dates: '2026 – Present',
     location: 'Champaign, IL',
     current: true,
+    audience: 'Readers of The Daily Illini, UIUC’s independent student newspaper.',
     points: [
-      'On the dev team building a personalized "For You" article feed for The Daily Illini website.',
-      // [ADD: your specific contribution and stack once you have it]
+      'On the dev team building a personalized "For You" article feed for The Daily Illini website, so readers find the stories they care about.',
+      // [ADD: your specific contribution, plus 1–2 more bullets]
     ],
-    tags: ['Recommendation systems'],
+    tech: ['Recommendation systems'], // [ADD: the actual stack]
+    skills: ['ml'],
   },
   {
     id: 'acm',
@@ -139,12 +217,15 @@ export const experience: Experience[] = [
     org: 'ACM SIG AI & Data Analytics @ UIUC',
     dates: 'Feb – May 2026',
     location: 'Champaign, IL',
+    audience: 'Anyone whose inbox buries the emails that actually matter.',
     points: [
-      'Led a 6-person team, owning the product spec, task delegation, and software design for a full-stack ML application.',
-      'Fine-tuned a BERT-base model (110M parameters) for multi-class email classification, reaching 96% test accuracy within 3 epochs.',
-      'Architected a FastAPI service with 5 endpoints for single and batch classification.',
+      'Led a 6-person team end to end: wrote the product spec, broke the work into tasks, delegated across model and API tracks, and owned software design through to a production-ready full-stack ML application.',
+      'Fine-tuned a BERT-base transformer (110M parameters) with PyTorch and HuggingFace Transformers for multi-class email priority classification.',
+      'Reached 96% test accuracy across all priority classes within 3 training epochs.',
+      'Architected a production REST API in FastAPI with 5 endpoints for single and batch email classification.',
     ],
-    tags: ['PyTorch', 'HuggingFace', 'BERT', 'FastAPI'],
+    tech: ['Python', 'PyTorch', 'HuggingFace Transformers', 'BERT', 'FastAPI', 'REST APIs'],
+    skills: ['python', 'ml', 'pytorch', 'fastapi', 'rest', 'fullstack'],
     link: 'https://github.com/nitya-lohiya/Personalized-Email_Classifier',
   },
   {
@@ -154,10 +235,13 @@ export const experience: Experience[] = [
     dates: 'Jan 2026 – Present',
     location: 'Champaign, IL',
     current: true,
+    audience: '30+ students taking their first programming course at UIUC.',
     points: [
-      'Guide 30+ students through Java assignments in UIUC’s intro CS course, breaking abstract concepts into steps they can debug on their own.',
+      'Guide 30+ students through Java assignments, helping them read errors, trace their code, and fix bugs on their own.',
+      'Break abstract CS concepts into concrete steps, and explain technical material clearly to students from non-technical backgrounds.',
     ],
-    tags: ['Java', 'Teaching'],
+    tech: ['Java', 'Debugging', 'Technical communication'],
+    skills: ['java'],
   },
   {
     id: 'syrma',
@@ -166,60 +250,23 @@ export const experience: Experience[] = [
     orgNote: 'Medical device design & manufacturing',
     dates: 'May – July 2025',
     location: 'Rajasthan, India',
+    audience: 'Engineers testing medical devices, where reliable results matter.',
     points: [
-      'Engineered automated Python pipelines to ingest, clean, and analyze medical device testing data, cutting evaluation turnaround by about 30%.',
-      'Validated embedded software for microcontroller-driven prototypes, finding and resolving defects to meet performance benchmarks.',
+      'Engineered automated Python data pipelines to ingest, clean, and analyze medical-device testing data, replacing manual analysis workflows.',
+      'Cut evaluation turnaround time by about 30%.',
+      'Validated embedded software for microcontroller-driven prototypes, finding and resolving defects to improve reliability and meet performance benchmarks.',
     ],
-    tags: ['Python', 'Pandas', 'Embedded testing'],
+    tech: ['Python', 'Pandas', 'NumPy', 'Data pipelines', 'Embedded testing'],
+    skills: ['python', 'data-pipelines'],
   },
 ];
-
-/**
- * The skill vocabulary the project explorer filters on. Each project lists a subset of these
- * ids in `skills`; a test fails if a project uses an id that is not defined here.
- */
-export const skillTaxonomy = [
-  {
-    group: 'Languages',
-    skills: [
-      { id: 'python', label: 'Python' },
-      { id: 'javascript', label: 'JavaScript' },
-      { id: 'java', label: 'Java' },
-      { id: 'dart', label: 'Dart' },
-      { id: 'sql', label: 'SQL' },
-    ],
-  },
-  {
-    group: 'Building',
-    skills: [
-      { id: 'react', label: 'React' },
-      { id: 'node', label: 'Node / Express' },
-      { id: 'fastapi', label: 'FastAPI' },
-      { id: 'flutter', label: 'Flutter' },
-      { id: 'rest', label: 'REST APIs' },
-      { id: 'docker', label: 'Docker' },
-    ],
-  },
-  {
-    group: 'Intelligence & data',
-    skills: [
-      { id: 'llm', label: 'LLMs' },
-      { id: 'ml', label: 'Machine learning' },
-      { id: 'pytorch', label: 'PyTorch' },
-      { id: 'knowledge-graphs', label: 'Knowledge graphs' },
-      { id: 'databases', label: 'Databases' },
-      { id: 'leadership', label: 'Team leadership' },
-    ],
-  },
-] as const;
-
-export type SkillId = (typeof skillTaxonomy)[number]['skills'][number]['id'];
 
 export type Project = {
   id: string;
   title: string;
   summary: string;
   description: string;
+  audience: string;
   role: string;
   context: string;
   stack: string[];
@@ -232,78 +279,29 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    id: 'itqan-kg',
-    title: 'Curriculum Knowledge Graph',
-    summary: 'A schema-constrained knowledge graph that powers an adaptive learning platform.',
+    id: 'rso-connect',
+    title: 'RSO Connect',
+    summary: 'One place to discover 100+ UIUC student organizations and their events.',
     description:
-      'An LLM pipeline that reads curriculum content and turns it into a validated graph of concepts and prerequisites, so a recommendation engine can decide what a student should learn next.',
-    role: 'AI/ML Software Engineer Intern, ITQAN Academy',
-    context: 'ATLAS Internship · 2026',
-    stack: ['LangChain', 'Ollama', 'SHACL', 'NLI', 'PyKEEN', 'pyBKT', 'Neo4j', 'Python'],
-    skills: ['python', 'llm', 'knowledge-graphs', 'ml', 'databases'],
-    links: [],
+      'A cross-platform Flutter app that replaces scattered Instagram posts and spreadsheets with a single discovery platform and a unified event calendar.',
+    audience: 'UIUC students looking for their people, and the clubs trying to reach them.',
+    role: 'Developer, team of 5',
+    context: 'Dec 2025',
+    stack: ['Flutter', 'Dart', 'Firebase', 'Git'],
+    skills: ['dart', 'flutter', 'databases'],
+    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/RSO-Connect-Project' }],
     featured: true,
     caseStudy: {
       problem:
-        'An adaptive platform can only recommend the next lesson if it knows how concepts depend on each other, and free-form LLM output is too inconsistent to build that map on.',
+        'Student organizations advertised across Instagram, group chats, and spreadsheets, so students missed events and clubs struggled to be found.',
       built:
-        'An Extract–Define–Canonicalize pipeline with LangChain and Ollama, plus a Bayesian Knowledge Tracing engine (pyBKT) that reads learner interactions against the graph.',
+        'A cross-platform Flutter + Firebase app that centralizes 100+ RSOs, with a real-time event aggregation system that syncs each organization’s events into one calendar.',
       decisions: [
-        'Constrained extraction to a schema, so every concept and relation has a defined shape before it enters the graph.',
-        'Layered the checks: SHACL for structure, natural language inference for meaning, and PyKEEN embeddings to flag anomalous edges.',
-        'Kept the graph curriculum-agnostic so it could extend beyond the original syllabus.',
+        'Chose Flutter so one codebase ships to both iOS and Android.',
+        'Aggregated decentralized event data into a single unified calendar instead of linking out to each club.',
+        'Ran post-launch user research with real students and iterated on features like calendar integration to improve retention and usability.',
       ],
-      outcome:
-        '119 concepts across 13 units of the Grade 6 Egyptian math curriculum, extended to Indian NCERT and US Grade 6, delivered as an algorithm-ready dataset.',
-    },
-  },
-  {
-    id: 'idx',
-    title: 'IDX Real Estate Platform',
-    summary: 'A full-stack listings app serving RETS-standard property and open-house data.',
-    description:
-      'A React frontend that fetches live listings from a Node/Express REST API backed by MySQL 8, with the database containerized so anyone can spin it up locally.',
-    role: 'Software Development Engineer Intern',
-    context: 'IDX Exchange · Summer 2026',
-    stack: ['React', 'Vite', 'Node.js', 'Express', 'mysql2', 'MySQL 8', 'Docker'],
-    skills: ['javascript', 'react', 'node', 'rest', 'sql', 'databases', 'docker'],
-    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/IDX-Exchange-SDE-s26' }],
-    featured: true,
-    caseStudy: {
-      problem:
-        'Property and open-house records in the RETS standard needed to reach a browser quickly and reliably, from a database that every developer could run the same way.',
-      built:
-        'Express REST endpoints over a mysql2 connection pool, a React (Vite) UI that renders listings from the API, and a Dockerized MySQL 8 instance.',
-      decisions: [
-        'Used a connection pool instead of per-request connections, so concurrent requests reuse database connections.',
-        'Moved configuration into environment variables, keeping credentials out of the code.',
-        'Containerized the database for a reproducible local setup.',
-      ],
-      outcome: 'A working end-to-end listings platform, from SQL tables to rendered property cards.',
-    },
-  },
-  {
-    id: 'email-classifier',
-    title: 'Gmail BERT Email Classifier',
-    summary: 'A fine-tuned BERT model that sorts email by priority, served through FastAPI.',
-    description:
-      'A production-style ML app that classifies incoming email into priority classes, with single and batch endpoints for the frontend to call.',
-    role: 'Project Manager, team of 6',
-    context: 'ACM SIG AI @ UIUC · Spring 2026',
-    stack: ['Python', 'PyTorch', 'HuggingFace', 'BERT', 'FastAPI'],
-    skills: ['python', 'ml', 'pytorch', 'fastapi', 'rest', 'leadership'],
-    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/Personalized-Email_Classifier' }],
-    featured: true,
-    caseStudy: {
-      problem: 'Inboxes mix urgent and ignorable mail, and keyword rules miss context.',
-      built:
-        'A BERT-base (110M parameter) classifier fine-tuned with PyTorch and HuggingFace, behind a FastAPI service with 5 endpoints for single and batch classification.',
-      decisions: [
-        'Fine-tuned a pretrained transformer rather than training from scratch, so the model starts out understanding language.',
-        'Exposed batch classification alongside single requests for bulk inbox processing.',
-        'As PM, owned the spec and split work across six people so model and API work could run in parallel.',
-      ],
-      outcome: '96% test accuracy across all priority classes within 3 training epochs.',
+      outcome: 'Shipped to real student users, with 100+ RSOs on a single platform.',
     },
   },
   {
@@ -311,37 +309,38 @@ export const projects: Project[] = [
     title: 'OSLI: Open-Source License Intelligence',
     summary: 'An API that scores license risk and resolves conflicts across npm dependencies.',
     description:
-      'Built at HackIllinois: 8 endpoints for license risk scoring, dependency auditing, compatibility checks, and Gemini-powered conflict resolution, using live npm registry data.',
+      'A production-grade REST API with 8 endpoints for license risk scoring, dependency auditing, compatibility checks, and Gemini-powered conflict resolution, built on live npm registry data.',
+    audience: 'Developers who want to ship without walking into a licensing problem.',
     role: 'Developer',
     context: 'HackIllinois · Feb 2026',
     stack: ['Python', 'FastAPI', 'Gemini', 'SPDX', 'async HTTP'],
     skills: ['python', 'fastapi', 'rest', 'llm'],
     links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/Open-Source-License-API' }],
+    featured: true,
+    caseStudy: {
+      problem: 'License conflicts hide deep in dependency trees, and most developers never read the licenses they ship.',
+      built:
+        'A FastAPI service with 8 endpoints that pulls live package data from the npm registry, scores license risk against SPDX identifiers, and uses Gemini to explain and resolve conflicts.',
+      decisions: [
+        'Fetched registry data with async HTTP requests so audits of many packages stay fast.',
+        'Added error handling and validation for edge cases such as missing or malformed license data.',
+        'Split the API into focused endpoints for risk scoring, dependency auditing, compatibility checks, and AI conflict resolution.',
+      ],
+      outcome: 'Built and deployed during HackIllinois 2026.',
+    },
   },
   {
-    id: 'rso-connect',
-    title: 'RSO Connect',
-    summary: 'One place to discover 100+ UIUC student organizations and their events.',
+    id: 'spoonbot',
+    title: 'SpoonBot',
+    summary: 'An allergy-friendly recipe recommender chatbot.',
     description:
-      'A cross-platform Flutter app that replaces scattered Instagram posts and spreadsheets, with a real-time system that syncs RSO events into one calendar. We ran post-launch user research and iterated on features like calendar integration.',
-    role: 'Developer, team of 5',
-    context: 'Dec 2025',
-    stack: ['Flutter', 'Dart', 'Firebase', 'Git'],
-    skills: ['dart', 'flutter', 'databases'],
-    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/RSO-Connect-Project' }],
-  },
-  {
-    id: 'nobe-lottery',
-    title: 'After-School Lottery System',
-    summary: 'A fair, auditable lottery that places elementary students into after-school programs.',
-    description:
-      'A NOBE consulting project replacing a manual spreadsheet lottery with a family sign-up form, an admin dashboard, and a seeded, tiered lottery engine that prioritizes the students who need a spot most.',
-    role: 'Software Developer, NOBE Tech', // [ADD: your specific contribution]
-    context: 'NOBE · Fall 2026',
-    stack: ['Java', 'Spring Boot', 'PostgreSQL', 'JavaScript', 'JUnit'],
-    skills: ['java', 'javascript', 'sql', 'databases'],
-    links: [],
-    status: 'In progress',
+      'A Streamlit app that maps a user’s allergy constraints to dynamic Spoonacular API queries, then uses Google Gemini to parse complex JSON into clean, structured recipes.',
+    audience: 'People with food allergies who are tired of checking every ingredient by hand.',
+    role: 'Developer',
+    context: 'Oct 2025',
+    stack: ['Python', 'Streamlit', 'Gemini', 'Spoonacular API', 'JSON'],
+    skills: ['python', 'llm', 'rest'],
+    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/SpoonBot' }],
   },
   {
     id: 'travel-planner',
@@ -349,6 +348,7 @@ export const projects: Project[] = [
     summary: 'An agentic, cost-optimizing trip planner for budget-conscious college students.',
     description:
       'Combines retrieval-augmented generation with real-time flight and hotel APIs to plan trips around a student budget.',
+    audience: 'College students who want to travel without blowing their budget.',
     role: 'Team member, CS 222',
     context: 'CS 222 · Fall 2026',
     stack: ['RAG', 'LLM agents', 'Flight & hotel APIs'],
@@ -360,25 +360,26 @@ export const projects: Project[] = [
     id: 'food-rec',
     title: 'Food Recommendation Pipeline',
     summary: 'A Random Forest classifier that recommends food, backed by a Postgres schema.',
-    description:
-      'A team ML pipeline that trains a scikit-learn Random Forest on data stored in a Supabase PostgreSQL schema.',
+    description: 'A team ML pipeline that trains a scikit-learn Random Forest on data stored in a Supabase PostgreSQL schema.',
+    audience: 'Diners deciding what to eat next.', // [ADD: confirm who this was for]
     role: 'Team member', // [ADD: what you personally built]
     context: 'Team project',
-    stack: ['Python', 'scikit-learn', 'Supabase', 'PostgreSQL'],
+    stack: ['Python', 'scikit-learn', 'Supabase', 'PostgreSQL', 'SQL'],
     skills: ['python', 'ml', 'sql', 'databases'],
     links: [], // [ADD: repo link]
   },
   {
-    id: 'spoonbot',
-    title: 'SpoonBot',
-    summary: 'An allergy-friendly recipe recommender chatbot.',
+    id: 'portfolio',
+    title: 'This Portfolio',
+    summary: 'The site you are on, built and tested like a production app.',
     description:
-      'A Streamlit app that turns a conversation about allergies into Spoonacular API queries, then uses Google Gemini to parse complex JSON into clean, structured recipes.',
-    role: 'Developer',
-    context: 'Oct 2025',
-    stack: ['Python', 'Streamlit', 'Gemini', 'Spoonacular API'],
-    skills: ['python', 'llm', 'rest'],
-    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/SpoonBot' }],
+      'React + TypeScript with a skill-lens feature, a Vitest + Testing Library suite, and a GitHub Actions pipeline that checks every pull request and deploys main to GitHub Pages.',
+    audience: 'Anyone who wants to see how I work, not just what I list.',
+    role: 'Designer & developer',
+    context: 'Oct 2026',
+    stack: ['React', 'TypeScript', 'Vite', 'Vitest', 'GitHub Actions'],
+    skills: ['javascript', 'react'],
+    links: [{ label: 'Code', href: 'https://github.com/nitya-lohiya/nitya-lohiya.github.io' }],
   },
 ];
 
@@ -400,8 +401,8 @@ export const beyond = [
     title: 'Bharatanatyam',
     text: 'Over ten years of classical Indian dance. I care about the art form and its history, and about how it gets commodified.',
   },
-  { id: 'hiking', title: 'Hiking', text: 'Happiest on a trail, or anywhere I have not been yet.' },
-  { id: 'music', title: 'Music', text: 'Always something playing while I build.' }, // [ADD: a genre or artist, if you'd like]
+  { id: 'hiking', title: 'Hiking', text: 'Happiest on a trail, or anywhere I haven’t been yet.' },
+  { id: 'music', title: 'Music', text: 'A big part of my everyday life.' }, // [ADD: a genre or artist, if you'd like]
   {
     id: 'book',
     title: 'A first book',

@@ -5,17 +5,18 @@
 
 A single-page portfolio covering my experience, projects, skills, resume, and a bit of who I am outside of code. It supports light and dark themes, works on phones and with a keyboard, and respects reduced-motion settings.
 
-## The interactive feature: project explorer
+## The interactive feature: the skill lens
 
-The Projects section treats my work like a small knowledge graph (a nod to the curriculum graph I built at ITQAN). Skills are nodes and projects connect to them.
+The whole site treats my work like a small knowledge graph (a nod to the curriculum graph I built at ITQAN). Skills are nodes, and every role and project connects to the skills it used.
 
-- **Select skills** to keep only the projects connected to *all* of them (AND, not OR).
-- **Every skill chip shows a live count** of how many projects you would see if you added it. Chips that would empty the results are dashed.
-- **Empty state:** if a combination matches nothing, the explorer says so, lists the closest projects with the skills they share, and offers one-click buttons to switch to a combination that works.
-- **Reset / Clear filters** returns to the full gallery.
-- Chips are real `<button>`s with `aria-pressed`, and the result count is announced through a polite live region.
+- **Hero graph:** each node around my name is a skill and can be clicked. Clicking one switches on a site-wide lens, and the caption reports how many roles and projects use it.
+- **Skill lens panel** (top of Experience): every skill as a chip, with a live count of how many pieces of work would stay lit if you added it. Picking several requires *all* of them (AND).
+- **Experience timeline:** matching roles light up and the rest fade back, so the timeline stays in order.
+- **Projects:** the gallery filters to matching projects. **Empty state:** if no side project uses the selection, it says so, links to the roles where I *did* use it, and offers closest matches with one-click fixes.
+- **Floating pill:** while a lens is active, a pill at the bottom shows it from anywhere on the page, with a one-click clear.
+- One shared selection drives all of it (`LensContext`). Chips and graph nodes are real `<button>`s with `aria-pressed`, and result counts are announced in a polite live region.
 
-The filtering logic is pure TypeScript in [`src/features/project-explorer/explorer.ts`](src/features/project-explorer/explorer.ts), separate from the UI in [`ProjectExplorer.tsx`](src/features/project-explorer/ProjectExplorer.tsx).
+The filtering logic is pure TypeScript in [`src/features/skill-lens/explorer.ts`](src/features/skill-lens/explorer.ts). The components live next to it.
 
 ## Setup
 
@@ -45,9 +46,9 @@ npm test
 | File | Covers |
 | --- | --- |
 | `explorer.test.ts` | Filtering logic: no selection, single skill, AND across skills, an unknown skill, no matches, input not mutated, live counts, closest-match ranking and limits |
-| `ProjectExplorer.test.tsx` | The real UI with user events: filtering, combined filters and updated counts, **empty state** with closest matches, jumping from a closest match to a working filter, reset/clear, toggling off, keyboard use, rendering the real site data |
-| `content.test.ts` | Data integrity: unique ids, every project skill exists in the taxonomy, every taxonomy skill has a project, https links, no `[ADD: …]` placeholder visible on the site, featured work first |
-| `App.test.tsx` | One `h1`, a section for every nav link, the theme toggle (and that it is remembered), the mobile menu (`aria-expanded`, Escape closes it), the resume download |
+| `SkillLens.test.tsx` | The real components with user events: lighting up roles and filtering projects, combined skills and updated counts, the **empty state** pointing to work experience, a combination nothing uses, jumping to a closest match, every reset path, the hero graph and panel sharing one selection, keyboard use |
+| `content.test.ts` | Data integrity: unique ids, skills exist in the taxonomy, every skill connects to some work, every role has an audience, detail, and a tech stack, no role repeated as a project, audience cards point at real anchors, https links, no `[ADD: …]` placeholders or old nickname visible |
+| `App.test.tsx` | One `h1`, a section per nav link, the theme toggle (and that it is remembered), the mobile menu, the hero graph lighting up experience and the floating pill clearing it, the resume download |
 
 ## CI/CD
 
@@ -71,7 +72,7 @@ If the repo is not named `<username>.github.io`, set `base: '/<repo-name>/'` in 
 
 All copy lives in **[`src/data/content.ts`](src/data/content.ts)**: profile, bio, experience, projects, skills, and the "beyond the resume" cards. Components only render it.
 
-- **Add a project:** append an object to `projects`. Use skill ids from `skillTaxonomy` in its `skills` array (the tests will fail otherwise). Add `featured: true` and a `caseStudy` to give it a full-width card with a "How I built it" panel.
+- **Add a role or project:** append to `experience` or `projects`. Use skill ids from `skillTaxonomy` in `skills` (the tests will fail otherwise), and fill in `audience`, the "Built for" line. For a project, `featured: true` plus a `caseStudy` gives it a full-width card with a "How I built it" panel.
 - **Resume:** replace `public/Nitya_Lohiya_Resume.pdf` (keep the name, or update `profile.resume`).
 - **Photo:** put an image in `public/` and set `profile.photo` to its path, e.g. `'/nitya.jpg'`.
 - **LinkedIn:** set `profile.linkedin`. Empty fields are hidden on the site.

@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { beyond, bio, education, experience, profile, projects, quickFacts, skillTaxonomy, skills } from '../data/content';
-import { ProjectExplorer } from '../features/project-explorer/ProjectExplorer';
+import { beyond, bio, education, profile, quickFacts, skills } from '../data/content';
+import { ExperienceTimeline } from '../features/skill-lens/ExperienceTimeline';
+import { LensPanel } from '../features/skill-lens/LensPanel';
+import { ProjectGallery } from '../features/skill-lens/ProjectGallery';
 import { ArrowIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon } from './Icons';
 import { Section } from './Section';
 
 export function About() {
   return (
-    <Section id="about" index="01" eyebrow="About" title="Builder first, curious always.">
+    <Section id="about" index="01" eyebrow="About" title="I build for the people on the other side of the screen.">
       <div className="about">
         <div className="about__bio reveal">
           {bio.map((p) => (
@@ -68,47 +70,12 @@ export function Experience() {
       index="02"
       eyebrow="Experience"
       title="Where I’ve been building."
-      intro="Internships, research, and the teams I’ve worked on and led."
+      intro="Every role started with a group of people and a problem in their way. Use the skill lens to see where each tool shows up."
     >
-      <ol className="timeline">
-        {experience.map((e) => (
-          <li key={e.id} className="timeline__item reveal">
-            <div className="timeline__when">
-              <span>{e.dates}</span>
-              <span className="timeline__where">{e.location}</span>
-            </div>
-            <article className="timeline__card" aria-labelledby={`exp-${e.id}`}>
-              <h3 id={`exp-${e.id}`} className="timeline__role">
-                {e.role}
-                {e.current && <span className="badge badge--live">Now</span>}
-              </h3>
-              <p className="timeline__org">
-                {e.link ? (
-                  <a href={e.link} target="_blank" rel="noreferrer" className="text-link">
-                    {e.org}
-                    <ArrowIcon />
-                  </a>
-                ) : (
-                  e.org
-                )}
-                {e.orgNote && <span className="timeline__note"> · {e.orgNote}</span>}
-              </p>
-              <ul className="timeline__points">
-                {e.points.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
-              <ul className="tag-list" aria-label="Technologies">
-                {e.tags.map((t) => (
-                  <li key={t} className="tag">
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          </li>
-        ))}
-      </ol>
+      <div className="reveal">
+        <LensPanel />
+      </div>
+      <ExperienceTimeline />
     </Section>
   );
 }
@@ -119,11 +86,11 @@ export function Projects() {
       id="projects"
       index="03"
       eyebrow="Projects"
-      title="Things I’ve made."
-      intro="My strongest work is up top. Open a featured project to see the problem, the decisions, and the outcome."
+      title="Things I’ve made on the side."
+      intro="Hackathon builds, class projects, and team apps. Each one started with someone who needed it. The skill lens above filters these too."
     >
       <div className="reveal">
-        <ProjectExplorer projects={projects} taxonomy={skillTaxonomy} />
+        <ProjectGallery />
       </div>
     </Section>
   );
@@ -131,7 +98,7 @@ export function Projects() {
 
 export function Skills() {
   return (
-    <Section id="skills" index="04" eyebrow="Skills" title="What I work with.">
+    <Section id="skills" index="04" eyebrow="Skills" title="What I work with." intro="The tools I reach for to get there.">
       <div className="skills">
         {skills.map((g) => (
           <div key={g.group} className="skills__group reveal">
@@ -204,11 +171,11 @@ export function Contact() {
   };
 
   return (
-    <Section id="contact" index="07" eyebrow="Contact" title="Let’s build something.">
+    <Section id="contact" index="07" eyebrow="Contact" title="Let’s build something that helps.">
       <div className="contact reveal">
         <p className="contact__lede">
           I’m looking for software engineering and ML internships, and I’m always happy to talk about reliable AI,
-          learning tools, or a project you’re excited about.
+          learning tools, or anything that makes someone’s day a little easier.
         </p>
         <div className="contact__row">
           <a href={`mailto:${profile.email}`} className="btn btn--primary btn--lg">
