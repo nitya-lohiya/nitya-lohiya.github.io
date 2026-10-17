@@ -110,7 +110,7 @@ Tilt and parallax only run on mouse or trackpad (`hover: hover` and `pointer: fi
 
 ## AI use and limitations
 
-I built this site with substantial help from **Claude Code (Anthropic)**. It:
+I built this site with help from **Claude Code (Anthropic)**. It:
 
 - scaffolded the project and wrote most of the component, CSS, test, and GitHub Actions code,
 - drafted the copy from my resume, my notes, and the code in my public GitHub repos (for example the IDX query timings, the classifier's training settings, and the OSLI architecture),
