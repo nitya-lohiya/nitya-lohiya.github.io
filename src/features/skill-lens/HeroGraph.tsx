@@ -76,10 +76,9 @@ export function HeroGraph({ skills = heroSkills, experience = allExperience, pro
       </div>
       <figcaption id="hero-graph-caption" className="hero-graph__caption">
         {selected.length === 0 ? (
-          <>
-            <span className="hero-graph__tap" aria-hidden="true" />
-            Tap a skill to light up where I’ve used it.
-          </>
+          <span>
+            <span className="hero-graph__fig">Fig. 1</span> Tap a skill to light up where I’ve used it.
+          </span>
         ) : (
           <span>
             <strong>{joinLabels(selected.map(skillLabel))}</strong>: {countLabel(roles, 'role', 'roles')} ·{' '}

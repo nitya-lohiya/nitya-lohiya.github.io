@@ -4,12 +4,10 @@ import { Nav } from './components/Nav';
 import { About, Contact, Experience, Projects, Resume, Skills } from './components/Sections';
 import { LensProvider } from './features/skill-lens/LensContext';
 import { LensPill } from './features/skill-lens/LensPill';
-import { usePointerEffects } from './hooks/usePointerEffects';
 import { useReveal } from './hooks/useReveal';
 
 export default function App() {
   useReveal();
-  usePointerEffects();
   return (
     <LensProvider>
       <a href="#main" className="skip-link">

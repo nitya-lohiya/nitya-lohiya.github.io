@@ -1,67 +1,78 @@
-/* ---------- Design tokens ---------- */
+/* =====================================================================
+   Design tokens. The palette is taken from a forest trail: paper and sand
+   neutrals, charcoal ink, and one accent (deep forest green) used sparingly.
+   Swap colors here; every component reads these variables.
+   ===================================================================== */
 :root {
-  --font-display: 'Fraunces Variable', Georgia, serif;
-  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Newsreader Variable', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'IBM Plex Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-  --bg: #faf6ef;
-  --bg-raised: #fffdf9;
-  --bg-sunken: #f2ebdf;
-  --ink: #1d1a16;
-  --ink-muted: #5a524a;
-  --line: #e6dccd;
-  --accent: #b2441b; /* terracotta */
-  --accent-ink: #ffffff;
-  --accent-soft: #f7e4d8;
-  --teal: #1d6b61;
-  --teal-soft: #dcede8;
-  --shadow: 0 1px 2px rgb(60 40 20 / 0.05), 0 8px 24px -12px rgb(60 40 20 / 0.18);
-  --shadow-lift: 0 2px 4px rgb(60 40 20 / 0.06), 0 18px 40px -18px rgb(60 40 20 / 0.3);
+  --bg: #f3f0e8; /* paper */
+  --bg-raised: #f9f7f2; /* fresh page */
+  --bg-sunken: #ebe6da; /* sand */
+  --ink: #1e2320; /* charcoal */
+  --ink-muted: #4f5650; /* lichen grey, 7:1 on paper */
+  --line: #d3cbbb; /* pencil rule */
+  --accent: #2e4a3b; /* deep forest */
+  --accent-ink: #f3f0e8;
+  --accent-soft: #e0e6da; /* sage wash */
+  --teal: #45633f; /* moss, for small markers */
+  --teal-soft: #e4e8dc;
+  --bark: #6b4e37;
+  --shadow: none;
+  --shadow-lift: 0 1px 0 var(--line);
 
-  --radius: 14px;
-  --radius-sm: 8px;
-  --max: 1120px;
-  --gutter: clamp(16px, 4vw, 32px);
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* Nature accents: 0 removes them. */
+  --grain-opacity: 0.05; /* paper grain over the page */
+  --topo-opacity: 0.16; /* contour lines behind the hero */
+
+  --radius: 4px;
+  --radius-sm: 3px;
+  --max: 1160px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   /* Motion dials: raise or lower to taste (0 turns an effect off). */
-  --motion-stagger: 70ms; /* delay between cascading items */
+  --motion-stagger: 90ms; /* delay between cascading items */
   --motion-intro: 1; /* scales hero intro delays */
-  --tilt-lift: -4px; /* how far cards rise on hover */
-  --glow-strength: 9%; /* cursor spotlight on cards */
-  --bg-blob-opacity: 0.55; /* hero background glow */
   color-scheme: light;
 }
 
+/* Night on the trail: the same story after dark, with a pale sage accent. */
 :root[data-theme='dark'] {
-  --bg: #15120f;
-  --bg-raised: #1e1a16;
-  --bg-sunken: #100e0b;
-  --ink: #f2ebe0;
-  --ink-muted: #b4a999;
-  --line: #352e27;
-  --accent: #f0905f;
-  --accent-ink: #1b0f08;
-  --accent-soft: #3a2318;
-  --teal: #74c7b8;
-  --teal-soft: #15302b;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.6);
-  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 18px 40px -18px rgb(0 0 0 / 0.75);
+  --bg: #151917;
+  --bg-raised: #1b201d;
+  --bg-sunken: #111412;
+  --ink: #e7e3d8;
+  --ink-muted: #a9ada3;
+  --line: #2f3631;
+  --accent: #a9c4a1;
+  --accent-ink: #151917;
+  --accent-soft: #222c25;
+  --teal: #9db894;
+  --teal-soft: #1e2721;
+  --bark: #c9a888;
+  --grain-opacity: 0.07;
+  --topo-opacity: 0.14;
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #15120f;
-    --bg-raised: #1e1a16;
-    --bg-sunken: #100e0b;
-    --ink: #f2ebe0;
-    --ink-muted: #b4a999;
-    --line: #352e27;
-    --accent: #f0905f;
-    --accent-ink: #1b0f08;
-    --accent-soft: #3a2318;
-    --teal: #74c7b8;
-    --teal-soft: #15302b;
+    --bg: #151917;
+    --bg-raised: #1b201d;
+    --bg-sunken: #111412;
+    --ink: #e7e3d8;
+    --ink-muted: #a9ada3;
+    --line: #2f3631;
+    --accent: #a9c4a1;
+    --accent-ink: #151917;
+    --accent-soft: #222c25;
+    --teal: #9db894;
+    --teal-soft: #1e2721;
+    --bark: #c9a888;
+    --grain-opacity: 0.07;
+    --topo-opacity: 0.14;
     color-scheme: dark;
   }
 }
@@ -88,17 +99,33 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+/* Paper grain: one tiny fractal-noise SVG laid over everything at a few percent. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+:root[data-theme='dark'] body::after {
+  mix-blend-mode: screen;
+  filter: invert(1);
 }
 
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 560;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.012em;
   margin: 0;
+  font-optical-sizing: auto;
 }
 
 p {
@@ -129,7 +156,7 @@ img {
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .container {
@@ -155,7 +182,7 @@ img {
   position: absolute;
   left: 16px;
   top: -60px;
-  z-index: 100;
+  z-index: 300;
   background: var(--ink);
   color: var(--bg);
   padding: 10px 16px;
@@ -167,17 +194,18 @@ img {
   top: 12px;
 }
 
+/* Small caps-style labels set in mono, like the margin notes in a field journal. */
 .eyebrow {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink-muted);
 }
 .eyebrow__index {
-  font-family: var(--font-display);
-  color: var(--ink-muted);
-  margin-right: 6px;
+  color: var(--accent);
+  margin-right: 8px;
 }
 
 /* ---------- Buttons, links, tags ---------- */
@@ -185,38 +213,30 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 20px;
-  border-radius: 999px;
+  padding: 11px 18px;
+  border-radius: var(--radius-sm);
   font: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.94rem;
+  font-weight: 500;
   text-decoration: none;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
   cursor: pointer;
   transition:
-    transform 0.2s var(--ease),
-    background-color 0.2s var(--ease),
-    border-color 0.2s var(--ease),
-    box-shadow 0.2s var(--ease);
-}
-.btn:hover {
-  transform: translateY(-2px);
-}
-.btn:active {
-  transform: translateY(0);
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease);
 }
 .btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-  transform: none;
 }
 .btn--primary {
   background: var(--accent);
   color: var(--accent-ink);
-  box-shadow: var(--shadow);
 }
 .btn--primary:hover {
-  box-shadow: var(--shadow-lift);
+  background: var(--ink);
+  color: var(--bg);
 }
 .btn--ghost {
   background: transparent;
@@ -227,11 +247,11 @@ img {
   border-color: var(--ink);
 }
 .btn--sm {
-  padding: 7px 14px;
+  padding: 7px 12px;
   font-size: 0.85rem;
 }
 .btn--lg {
-  padding: 14px 24px;
+  padding: 14px 22px;
   font-size: 1rem;
   word-break: break-all;
 }
@@ -239,35 +259,32 @@ img {
 .icon-btn {
   display: inline-grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  border: 1.5px solid var(--line);
-  background: var(--bg-raised);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: transparent;
   color: var(--ink);
   cursor: pointer;
-  transition:
-    border-color 0.2s var(--ease),
-    transform 0.2s var(--ease);
+  transition: border-color 0.3s var(--ease);
 }
 .icon-btn:hover {
   border-color: var(--ink);
-  transform: rotate(-8deg);
 }
 
 .text-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: underline;
   text-decoration-color: var(--line);
   text-underline-offset: 4px;
-  text-decoration-thickness: 2px;
-  transition: text-decoration-color 0.2s var(--ease);
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.3s var(--ease);
 }
 .text-link:hover {
-  text-decoration-color: var(--accent);
+  text-decoration-color: currentColor;
 }
 
 .tag-list {
@@ -276,44 +293,40 @@ img {
   gap: 6px;
 }
 .tag {
-  font-size: 0.78rem;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--bg-sunken);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: transparent;
   color: var(--ink-muted);
   border: 1px solid var(--line);
 }
 .tag--accent {
-  background: var(--teal-soft);
-  color: var(--teal);
-  border-color: transparent;
-  font-weight: 600;
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
 }
 
 .badge {
   display: inline-block;
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 999px;
+  padding: 1px 6px;
+  border-radius: 2px;
   border: 1px solid var(--line);
   color: var(--ink-muted);
   vertical-align: middle;
 }
 .badge--accent {
-  background: var(--accent-soft);
   color: var(--accent);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
 }
 .badge--live {
   margin-left: 10px;
-  background: var(--teal-soft);
   color: var(--teal);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--teal) 45%, var(--line));
 }
 
 /* ---------- Nav ---------- */
@@ -321,17 +334,16 @@ img {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--bg) 86%, transparent);
-  backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
 }
 .nav__progress {
   position: absolute;
   left: 0;
   right: 0;
   bottom: -1px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--teal));
+  height: 1px;
+  background: var(--accent);
   transform-origin: left;
 }
 .nav__inner {
@@ -343,63 +355,43 @@ img {
 }
 .nav__logo {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
   font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 500;
   text-decoration: none;
 }
 .nav__mark {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-style: italic;
-  font-size: 1.1rem;
-  line-height: 1;
-  padding-bottom: 3px;
+  display: none;
 }
 .nav__links {
+  position: relative;
   display: flex;
-  gap: 4px;
+  gap: 2px;
 }
 .nav__links a {
   display: block;
   padding: 6px 12px;
-  border-radius: 999px;
   text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 500;
+  font-size: 0.9rem;
   color: var(--ink-muted);
-  transition:
-    color 0.2s var(--ease),
-    background-color 0.2s var(--ease);
+  transition: color 0.3s var(--ease);
 }
-.nav__links a:hover {
-  color: var(--ink);
-}
-.nav__links {
-  position: relative;
-}
+.nav__links a:hover,
 .nav__links a.is-active {
   color: var(--ink);
 }
+/* The active link gets a short rule underneath that slides between links. */
 .nav__pill {
   position: absolute;
   left: 0;
-  top: 0;
-  height: 100%;
-  border-radius: 999px;
-  background: var(--bg-sunken);
-  box-shadow: inset 0 0 0 1px var(--line);
-  z-index: -1;
+  bottom: -2px;
+  height: 1px;
+  background: var(--ink);
   transition:
-    transform 0.45s var(--ease-spring),
-    width 0.45s var(--ease-spring),
+    transform 0.5s var(--ease),
+    width 0.5s var(--ease),
     opacity 0.3s var(--ease);
   pointer-events: none;
 }
@@ -415,76 +407,107 @@ img {
   .nav__menu-btn {
     display: inline-grid;
   }
+  .nav__pill {
+    display: none;
+  }
   .nav__links {
     position: absolute;
     top: 64px;
     left: 0;
     right: 0;
     flex-direction: column;
-    gap: 2px;
-    padding: 12px var(--gutter) 20px;
+    gap: 0;
+    padding: 8px var(--gutter) 16px;
     background: var(--bg);
     border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow);
     display: none;
   }
   .nav__links.is-open {
     display: flex;
   }
   .nav__links a {
-    padding: 12px 14px;
+    padding: 12px 0;
     font-size: 1.05rem;
+    border-bottom: 1px solid var(--line);
   }
 }
 
 /* ---------- Hero ---------- */
+/* Asymmetric two-column spread: big type on the left, the skill map on the right. */
+.hero-wrap {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
 .hero {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   align-items: center;
-  gap: 32px 48px;
-  padding-top: clamp(48px, 9vw, 112px);
-  padding-bottom: clamp(48px, 7vw, 88px);
+  gap: 40px 56px;
+  padding-top: clamp(56px, 9vw, 120px);
+  padding-bottom: clamp(48px, 6vw, 80px);
+}
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+.hero__coords {
+  color: var(--ink-muted);
+  opacity: 0.8;
 }
 .hero__title {
-  font-size: clamp(2.6rem, 7vw, 4.75rem);
-  font-weight: 600;
-  margin-top: 14px;
+  font-size: clamp(3rem, 8.2vw, 6.4rem);
+  font-weight: 450;
+  line-height: 0.98;
   letter-spacing: -0.03em;
+  margin-top: 22px;
 }
 .hero__tagline {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+  font-size: clamp(1.35rem, 2.7vw, 1.9rem);
   line-height: 1.3;
-  margin-top: 18px;
-  max-width: 26ch;
-}
-.hero__lede {
-  color: var(--ink-muted);
-  margin-top: 16px;
-  max-width: 54ch;
-}
-.hero__ctas {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-top: 28px;
-}
-.hero__socials {
-  display: inline-flex;
-  gap: 8px;
-  margin-left: 4px;
+  margin-top: 26px;
+  max-width: 24ch;
 }
 .hero__tagline em {
   font-style: italic;
   color: var(--accent);
 }
+.hero__lede {
+  color: var(--ink-muted);
+  margin-top: 18px;
+  max-width: 50ch;
+}
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin-top: 34px;
+}
+.hero__socials {
+  display: inline-flex;
+  gap: 8px;
+}
 
-/* Interactive hero graph */
+/* The skill map, drawn like a trail map over faint contour lines. */
 .hero__art {
+  position: relative;
   display: grid;
   place-items: center;
+}
+.hero__art::before {
+  content: '';
+  position: absolute;
+  inset: -18% -40% -18% -30%;
+  z-index: -1;
+  background: var(--ink);
+  opacity: var(--topo-opacity);
+  -webkit-mask: url('/topo.svg') center / cover no-repeat;
+  mask: url('/topo.svg') center / cover no-repeat;
+  pointer-events: none;
 }
 .hero-graph {
   margin: 0;
@@ -503,30 +526,25 @@ img {
   overflow: visible;
 }
 .hero-graph .edge {
-  stroke: var(--accent);
-  stroke-width: 1.5;
-  stroke-dasharray: 4 6;
-  opacity: 0.45;
-  animation:
-    edge-in 0.9s var(--ease) calc((0.7s + var(--i, 0) * 0.08s) * var(--motion-intro)) backwards,
-    flow 6s linear calc(var(--i, 0) * 0.5s) infinite;
-  transition: opacity 0.3s var(--ease), stroke-width 0.3s var(--ease);
+  stroke: var(--ink-muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 5;
+  opacity: 0.7;
+  transition:
+    stroke 0.4s var(--ease),
+    stroke-width 0.4s var(--ease),
+    opacity 0.4s var(--ease);
 }
 .hero-graph .edge.is-lit {
-  opacity: 1;
-  stroke-width: 3;
+  stroke: var(--accent);
+  stroke-width: 2;
   stroke-dasharray: none;
+  opacity: 1;
 }
 .hero-graph .edge--ring {
   stroke: var(--line);
   stroke-dasharray: none;
   opacity: 1;
-  animation: none;
-}
-@keyframes flow {
-  to {
-    stroke-dashoffset: -100;
-  }
 }
 .hero-graph__center {
   position: absolute;
@@ -535,15 +553,18 @@ img {
   translate: -50% -50%;
   display: grid;
   place-items: center;
-  width: 23%;
+  width: 18%;
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--accent);
   color: var(--accent-ink);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(1rem, 2.4vw, 1.3rem);
-  box-shadow: 0 0 0 10px color-mix(in srgb, var(--accent) 22%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow:
+    0 0 0 6px var(--bg),
+    0 0 0 7px var(--line);
 }
 .graph-node {
   position: absolute;
@@ -551,187 +572,163 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 7px 13px 7px 10px;
-  border-radius: 999px;
-  border: 1.5px solid var(--line);
-  background: var(--bg-raised);
+  padding: 5px 10px 5px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  background: var(--bg);
   color: var(--ink);
-  font: inherit;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   white-space: nowrap;
   cursor: pointer;
-  box-shadow: var(--shadow);
-  animation:
-    node-in 0.7s var(--ease-spring) calc((0.9s + var(--i, 0) * 0.09s) * var(--motion-intro)) backwards,
-    float 6s ease-in-out calc(var(--i, 0) * 0.35s) infinite;
   transition:
-    background-color 0.25s var(--ease),
-    border-color 0.25s var(--ease),
-    color 0.25s var(--ease),
-    scale 0.2s var(--ease);
+    background-color 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease);
 }
 .graph-node:hover {
-  border-color: var(--teal);
-  scale: 1.06;
+  border-color: var(--ink);
 }
 .graph-node__dot {
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  border: 2px solid var(--teal);
+  border: 1.5px solid var(--accent);
 }
 .graph-node.is-on {
-  background: var(--teal);
-  border-color: var(--teal);
-  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 .graph-node.is-on .graph-node__dot {
-  background: var(--bg);
-  border-color: var(--bg);
-}
-@keyframes float {
-  50% {
-    transform: translateY(-5px);
-  }
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
 }
 .hero-graph__caption {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
+  align-items: baseline;
+  gap: 8px;
   min-height: 3em;
-  margin-top: 8px;
+  margin-top: 10px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   color: var(--ink-muted);
 }
 .hero-graph__caption strong {
   color: var(--ink);
-}
-.hero-graph__tap {
-  flex: none;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--teal);
-  animation: pulse 2.4s infinite;
-}
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--teal) 60%, transparent);
-  }
-  70%,
-  100% {
-    box-shadow: 0 0 0 10px transparent;
-  }
-}
-
-/* What I build */
-.focus {
-  grid-column: 1 / -1;
-  margin-top: 24px;
-}
-.focus__title {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+}
+.hero-graph__fig {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-muted);
-  margin-bottom: 14px;
+}
+.hero-graph__tap {
+  display: none;
+}
+
+/* What I build: a spec-sheet row divided by fine rules, not four floating cards. */
+.focus {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  border-top: 1px solid var(--ink);
+}
+.focus__title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding: 12px 0 0;
 }
 .focus__list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+}
+.focus__list > li + li {
+  border-left: 1px solid var(--line);
 }
 .focus-card {
   display: grid;
   align-content: start;
   height: 100%;
-  padding: 20px 18px 22px;
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  background: var(--bg-raised);
+  padding: 18px 22px 8px 0;
   text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  transition:
-    transform 0.25s var(--ease),
-    box-shadow 0.25s var(--ease),
-    border-color 0.25s var(--ease);
 }
-.focus-card::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--teal));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s var(--ease);
-}
-.focus-card:hover {
-  box-shadow: var(--shadow-lift);
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
-}
-.focus-card:hover::after {
-  transform: scaleX(1);
+.focus__list > li + li .focus-card {
+  padding-left: 22px;
 }
 .focus-card__metric {
   font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3vw, 2.2rem);
-  font-weight: 600;
-  line-height: 1.1;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 .focus-card__metric-label {
-  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   color: var(--ink-muted);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 .focus-card__area {
-  font-family: var(--font-display);
-  font-size: 1.08rem;
   font-weight: 600;
-  line-height: 1.25;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px dashed var(--line);
+  font-size: 0.98rem;
+  line-height: 1.3;
+  margin-top: 18px;
 }
 .focus-card__detail {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   color: var(--ink-muted);
   margin-top: 6px;
+}
+.focus-card:hover .focus-card__area {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 @media (max-width: 960px) {
   .focus__list {
     grid-template-columns: repeat(2, 1fr);
   }
+  .focus__list > li:nth-child(3) {
+    border-left: 0;
+  }
+  .focus__list > li:nth-child(3) .focus-card {
+    padding-left: 0;
+  }
+  .focus__list > li:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
 }
 @media (max-width: 860px) {
   .hero {
     grid-template-columns: 1fr;
   }
-  .hero__art {
-    order: -1;
-  }
   .hero-graph {
-    max-width: 360px;
-  }
-  .graph-node {
-    font-size: 0.75rem;
-    padding: 6px 10px 6px 8px;
+    max-width: 380px;
   }
 }
 @media (max-width: 520px) {
   .focus__list {
     grid-template-columns: 1fr;
+  }
+  .focus__list > li + li {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .focus__list > li + li .focus-card {
+    padding-left: 0;
+  }
+  .graph-node {
+    font-size: 0.68rem;
+    padding: 4px 7px 4px 6px;
   }
 }
 
@@ -1615,209 +1612,80 @@ img {
 
 
 /* =====================================================================
-   Motion layer. Everything that makes the page move lives here, and all of
-   it is switched off under prefers-reduced-motion at the bottom of the file.
-   Tune the dials (--motion-*, --tilt-lift, --glow-strength, --bg-blob-opacity)
-   in :root at the top.
+   Motion. Deliberately quiet: slow fades, no bounce, nothing that follows
+   the cursor. Switched off entirely under prefers-reduced-motion below.
    ===================================================================== */
 
-/* Page intro: the nav settles in, the name types itself, then the rest follows. */
-.nav {
-  animation: fade-down 0.6s var(--ease) backwards;
-}
+/* Page intro: the hero copy settles in, line by line. */
 .intro {
-  animation: fade-up 0.8s var(--ease) backwards;
+  animation: fade-up 1s var(--ease) backwards;
 }
 .intro--1 { animation-delay: calc(0.05s * var(--motion-intro)); }
-.intro--2 { animation-delay: calc(0.55s * var(--motion-intro)); }
-.intro--3 { animation-delay: calc(0.65s * var(--motion-intro)); }
-.intro--4 { animation-delay: calc(0.75s * var(--motion-intro)); }
-.hero__name {
-  display: inline-block;
-}
-.hero__char {
-  display: inline-block;
-  animation: char-in 0.75s var(--ease) backwards;
-  animation-delay: calc((0.15s + var(--i, 0) * 0.035s) * var(--motion-intro));
+.intro--2 { animation-delay: calc(0.25s * var(--motion-intro)); }
+.intro--3 { animation-delay: calc(0.4s * var(--motion-intro)); }
+.intro--4 { animation-delay: calc(0.55s * var(--motion-intro)); }
+.hero__art {
+  animation: fade-in 1.6s var(--ease) calc(0.3s * var(--motion-intro)) backwards;
 }
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(10px); }
 }
-@keyframes fade-down {
-  from { opacity: 0; transform: translateY(-100%); }
-}
-@keyframes char-in {
-  from { opacity: 0; transform: translateY(0.45em) rotate(6deg); filter: blur(6px); }
-}
-@keyframes edge-in {
+@keyframes fade-in {
   from { opacity: 0; }
 }
-@keyframes node-in {
-  from { opacity: 0; scale: 0.6; }
-}
 
-/* Key phrase: a slow accent-to-teal shimmer. */
-.hero__tagline em {
-  background: linear-gradient(100deg, var(--accent) 20%, var(--teal) 50%, var(--accent) 80%);
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 9s linear infinite;
-}
-@keyframes shimmer {
-  to { background-position: -220% 0; }
-}
-
-/* Hero background: three soft glows drifting on their own, plus a dot grid. The whole layer
-   leans a few pixels toward the cursor (--px/--py from usePointerEffects). */
-.hero-wrap {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-.hero-bg {
-  position: absolute;
-  inset: -40px;
-  z-index: -1;
-  pointer-events: none;
-  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px), 0);
-  transition: transform 0.6s var(--ease);
-}
-.hero-bg__blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(70px);
-  opacity: var(--bg-blob-opacity);
-  animation: drift 22s ease-in-out infinite alternate;
-}
-.hero-bg__blob--a {
-  width: 42vw;
-  height: 42vw;
-  max-width: 560px;
-  max-height: 560px;
-  right: 2%;
-  top: 4%;
-  background: color-mix(in srgb, var(--accent) 38%, transparent);
-}
-.hero-bg__blob--b {
-  width: 34vw;
-  height: 34vw;
-  max-width: 460px;
-  max-height: 460px;
-  right: 24%;
-  top: 34%;
-  background: color-mix(in srgb, var(--teal) 30%, transparent);
-  animation-duration: 28s;
-  animation-delay: -6s;
-}
-.hero-bg__blob--c {
-  width: 26vw;
-  height: 26vw;
-  max-width: 340px;
-  max-height: 340px;
-  left: -4%;
-  bottom: 6%;
-  background: color-mix(in srgb, var(--accent) 22%, transparent);
-  animation-duration: 32s;
-  animation-delay: -12s;
-}
-@keyframes drift {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-6%, 8%) scale(1.08); }
-  100% { transform: translate(5%, -6%) scale(0.95); }
-}
-.hero-bg__grid {
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(color-mix(in srgb, var(--ink) 16%, transparent) 1px, transparent 1.2px);
-  background-size: 26px 26px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 65% 35%, #000 10%, transparent 75%);
-  mask-image: radial-gradient(ellipse 70% 60% at 65% 35%, #000 10%, transparent 75%);
-  transform: translate3d(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 6px), 0);
-  transition: transform 0.6s var(--ease);
-}
-
-/* Hero graph center: a slow breathing ring. */
-.hero-graph__center {
-  animation:
-    node-in 0.8s var(--ease-spring) calc(0.6s * var(--motion-intro)) backwards,
-    breathe 4.5s ease-in-out 1.6s infinite;
-}
-@keyframes breathe {
-  50% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--accent) 12%, transparent); }
-}
-
-/* Cards: lift, lean toward the cursor (.tilt), and catch a soft spotlight (.tilt and .spot). */
-.tilt {
-  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
-  transition:
-    transform 0.35s var(--ease),
-    box-shadow 0.25s var(--ease),
-    border-color 0.25s var(--ease);
-  will-change: transform;
-}
-.tilt:hover {
-  --lift: var(--tilt-lift);
+/* Cards: a quiet change of edge colour on hover instead of lift and glow. */
+.tilt,
+.spot {
+  transition: border-color 0.3s var(--ease);
 }
 .tilt:hover,
 .spot:hover {
-  background-image: radial-gradient(
-    420px circle at var(--mx, 50%) var(--my, 0%),
-    color-mix(in srgb, var(--accent) var(--glow-strength), transparent),
-    transparent 65%
-  );
+  border-color: color-mix(in srgb, var(--ink) 45%, var(--line));
 }
 
 /* Project glyph: a tiny graph of the project's skills; lit nodes follow the skill lens. */
 .glyph {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 46px;
-  height: 46px;
+  top: 18px;
+  right: 18px;
+  width: 40px;
+  height: 40px;
   overflow: visible;
-  transition: transform 1.2s var(--ease);
-}
-.project-card article:hover .glyph {
-  transform: rotate(30deg);
 }
 .glyph__ring {
   fill: none;
   stroke: var(--line);
-  stroke-dasharray: 2 3;
 }
 .glyph__edge {
   stroke: var(--line);
-  stroke-width: 1.2;
-  transition: stroke 0.3s var(--ease);
+  stroke-width: 1;
+  transition: stroke 0.4s var(--ease);
 }
 .glyph__node {
   fill: var(--bg-raised);
-  stroke: var(--teal);
-  stroke-width: 1.6;
-  transition: r 0.3s var(--ease-spring), fill 0.3s var(--ease);
+  stroke: var(--ink-muted);
+  stroke-width: 1.2;
+  transition: fill 0.4s var(--ease);
 }
 .glyph__center {
   fill: var(--accent);
 }
 .glyph .is-lit .glyph__node {
-  fill: var(--teal);
+  fill: var(--accent);
+  stroke: var(--accent);
 }
 .glyph .is-lit .glyph__edge {
-  stroke: var(--teal);
+  stroke: var(--accent);
 }
 .project-card__meta,
 .project-card__title {
-  padding-right: 56px;
+  padding-right: 52px;
 }
 
-/* "How I built it": the panel unfolds instead of snapping open. */
+/* "How I built it": the panel opens with a soft fade. */
 .case-study[open] dl {
-  animation: unfold 0.45s var(--ease) both;
-}
-@keyframes unfold {
-  from { opacity: 0; transform: translateY(-8px); }
+  animation: fade-in 0.5s var(--ease) both;
 }
 @supports (interpolate-size: allow-keywords) {
   .case-study {
@@ -1827,46 +1695,25 @@ img {
     block-size: 0;
     overflow: clip;
     transition:
-      block-size 0.45s var(--ease),
-      content-visibility 0.45s allow-discrete;
+      block-size 0.5s var(--ease),
+      content-visibility 0.5s allow-discrete;
   }
   .case-study[open]::details-content {
     block-size: auto;
   }
 }
 
-/* Buttons and links: a light sweep across the primary button, arrows nudge forward. */
-.btn--primary {
-  position: relative;
-  overflow: hidden;
-}
-.btn--primary::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.35) 50%, transparent 70%);
-  transform: translateX(-120%);
-  transition: transform 0.7s var(--ease);
-}
-.btn--primary:hover::after {
-  transform: translateX(120%);
-}
+/* Links: arrows step forward a little. */
 .text-link svg,
 .btn svg {
-  transition: transform 0.25s var(--ease);
+  transition: transform 0.3s var(--ease);
 }
 .text-link:hover svg {
   transform: translate(2px, -2px);
 }
-.btn:hover svg {
-  transform: translateY(1px);
-}
-.chip:hover .chip__dot,
-.graph-node:hover .graph-node__dot {
-  background: var(--teal);
-}
 
-/* Signature divider: a Kanjeevaram temple border that unrolls from the center. */
+/* Signature divider: the Kanjeevaram temple border from Bharatanatyam costumes, drawn here
+   as a fine ridge line of peaks, so it reads as both silk border and mountain range. */
 .section {
   position: relative;
 }
@@ -1884,23 +1731,22 @@ img {
 .temple-border__band {
   flex: 1;
   height: 9px;
-  background: linear-gradient(to left, var(--accent), transparent);
-  opacity: 0.55;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9'%3E%3Cpath d='M0 9L6 1L12 9Z'/%3E%3C/svg%3E") repeat-x left center / 12px 9px;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='9'%3E%3Cpath d='M0 9L6 1L12 9Z'/%3E%3C/svg%3E") repeat-x left center / 12px 9px;
+  background: var(--ink-muted);
+  opacity: 0.35;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M0.5 8.5L7 1.5L13.5 8.5' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") repeat-x left center / 14px 9px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M0.5 8.5L7 1.5L13.5 8.5' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") repeat-x left center / 14px 9px;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 1.2s var(--ease) 0.15s;
+  transition: transform 1.6s var(--ease) 0.15s;
 }
 .temple-border__band--right {
-  background: linear-gradient(to right, var(--accent), transparent);
   transform-origin: left;
 }
 .temple-border__center {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   rotate: 45deg;
-  border: 2px solid var(--accent);
+  border: 1px solid var(--accent);
   background: var(--bg);
   box-shadow: 0 0 0 3px var(--bg);
 }
@@ -1912,10 +1758,10 @@ html:not(.js-reveal) .temple-border__band {
 /* Cascades: children of [data-stagger] enter one after another. */
 .js-reveal [data-stagger] > * {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(8px);
   transition:
-    opacity 0.6s var(--ease),
-    transform 0.6s var(--ease);
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
   transition-delay: calc(var(--i, 0) * var(--motion-stagger));
 }
 .js-reveal [data-stagger].is-visible > * {
@@ -1923,35 +1769,26 @@ html:not(.js-reveal) .temple-border__band {
   transform: none;
 }
 
-/* Theme switch: the new theme grows out of the toggle as a circle (View Transitions API),
-   or cross-fades where that isn't supported. */
+/* Theme switch: a plain cross-fade (View Transitions where supported, colour fade elsewhere). */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-::view-transition-new(root) {
-  animation: theme-reveal 0.6s var(--ease);
-}
-@keyframes theme-reveal {
-  from { clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0)); }
-  to { clip-path: circle(150vmax at var(--vt-x, 100%) var(--vt-y, 0)); }
+  animation-duration: 0.45s;
 }
 .theme-fade,
 .theme-fade * {
   transition:
-    background-color 0.4s var(--ease),
-    color 0.4s var(--ease),
-    border-color 0.4s var(--ease) !important;
+    background-color 0.45s var(--ease),
+    color 0.45s var(--ease),
+    border-color 0.45s var(--ease) !important;
 }
 
 /* ---------- Scroll reveal ---------- */
 .js-reveal .reveal {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(10px);
   transition:
-    opacity 0.7s var(--ease),
-    transform 0.7s var(--ease);
+    opacity 1s var(--ease),
+    transform 1s var(--ease);
 }
 .js-reveal .reveal.is-visible {
   opacity: 1;
@@ -1979,14 +1816,7 @@ html:not(.js-reveal) .temple-border__band {
   .temple-border__band {
     opacity: 0.55;
   }
-  .hero-bg,
-  .hero-bg__grid,
-  .tilt {
-    transform: none !important;
-  }
-  .hero-bg__blob {
-    animation: none !important;
-  }
+
   .js-reveal .reveal {
     opacity: 1;
     transform: none;
