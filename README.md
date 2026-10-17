@@ -107,3 +107,22 @@ Tilt and parallax only run on mouse or trackpad (`hover: hover` and `pointer: fi
 - `prefers-reduced-motion` turns off scroll reveals, the hero graph animation, and smooth scrolling.
 - Fonts are self-hosted (`@fontsource-variable`), with no third-party requests, analytics, or cookies.
 
+
+## AI use and limitations
+
+I built this site with substantial help from **Claude Code (Anthropic)**. It:
+
+- scaffolded the project and wrote most of the component, CSS, test, and GitHub Actions code,
+- drafted the copy from my resume, my notes, and the code in my public GitHub repos (for example the IDX query timings, the classifier's training settings, and the OSLI architecture),
+- built the motion layer, and found and fixed bugs along the way (a CSS minifier dropping the nav blur, and the skill lens hiding roles after a reset),
+- checked layouts with automated Chrome screenshots at desktop and phone widths, and ran Lighthouse.
+
+I decided what the site should say and how it should feel, reviewed every change through a pull request, and asked for revisions when the wording or design wasn't right.
+
+Limitations to be aware of:
+
+- Copy was AI-drafted and then reviewed by me. Numbers come from my resume or my repos. Where the two disagree (the email classifier's README reports 99.7% test accuracy, my resume 96%), the site uses the resume figure.
+- The AI Travel Planner and Food Recommendation write-ups have no public repo behind them yet, so their "decisions" are more general than the others.
+- Unit tests run in jsdom, so they check behavior and accessibility semantics, not pixels. Visual checks were automated screenshots plus my own review in the browser, not a visual-regression suite.
+- The View Transitions theme sweep and the unfolding "How I built it" panels need a recent Chromium-based browser. Other browsers get a plain cross-fade and an instant open.
+- The resume preview uses the browser's built-in PDF viewer. Some mobile browsers show a fallback link instead.

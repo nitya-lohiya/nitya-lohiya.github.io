@@ -49,9 +49,6 @@ export function Hero() {
               Resume
             </a>
             <span className="hero__socials">
-              <a href={`mailto:${profile.email}`} className="icon-btn" aria-label={`Email ${profile.email}`}>
-                <span aria-hidden="true">@</span>
-              </a>
               <a href={profile.github} className="icon-btn" target="_blank" rel="noreferrer" aria-label="GitHub (opens in a new tab)">
                 <GitHubIcon />
               </a>
