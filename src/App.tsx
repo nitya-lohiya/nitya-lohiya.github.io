@@ -1,6 +1,7 @@
 import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
 import { Nav } from './components/Nav';
+import { SketchFilter } from './components/Sketches';
 import { About, Contact, Experience, Projects, Resume, Skills } from './components/Sections';
 import { LensProvider } from './features/skill-lens/LensContext';
 import { LensPill } from './features/skill-lens/LensPill';
@@ -10,6 +11,7 @@ export default function App() {
   useReveal();
   return (
     <LensProvider>
+      <SketchFilter />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

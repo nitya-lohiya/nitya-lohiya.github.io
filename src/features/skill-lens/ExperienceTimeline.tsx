@@ -1,4 +1,5 @@
-import { experience as allExperience } from '../../data/content';
+import { experience as allExperience, notes } from '../../data/content';
+import { HandNote } from '../../components/HandNote';
 import { ArrowIcon } from '../../components/Icons';
 import { filterProjects } from './explorer';
 import { useLens } from './LensContext';
@@ -20,6 +21,7 @@ export function ExperienceTimeline({ experience = allExperience }: Props) {
               <div className="timeline__when">
                 <span>{e.dates}</span>
                 <span className="timeline__where">{e.location}</span>
+                <span className="blaze" aria-hidden="true" />
               </div>
               <article className="timeline__card spot" aria-labelledby={`exp-${e.id}-title`}>
                 <header className="timeline__head">
@@ -43,6 +45,11 @@ export function ExperienceTimeline({ experience = allExperience }: Props) {
                   </div>
                 </header>
 
+                {(e.id === 'itqan' || e.id === 'idx') && (
+                  <HandNote arrow="left" className="timeline__note-hand">
+                    {e.id === 'itqan' ? notes.itqan : notes.idx}
+                  </HandNote>
+                )}
                 <p className="for-line">
                   <span className="for-line__label">Built for</span>
                   {e.audience}

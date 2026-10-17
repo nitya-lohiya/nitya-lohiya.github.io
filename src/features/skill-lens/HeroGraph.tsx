@@ -2,6 +2,8 @@ import type { CSSProperties } from 'react';
 import { experience as allExperience, heroSkills, projects as allProjects } from '../../data/content';
 import { filterProjects, joinLabels } from './explorer';
 import { countLabel, skillLabel } from './labels';
+import { HandNote } from '../../components/HandNote';
+import { notes } from '../../data/content';
 import { useLens } from './LensContext';
 
 // Hexagon around the center, in a 400×400 space. Index matches `heroSkills`.
@@ -19,13 +21,18 @@ type Props = { skills?: readonly string[]; experience?: typeof allExperience; pr
 
 /** The hero's interactive graph: each node is a skill, and clicking one switches on the site-wide lens. */
 export function HeroGraph({ skills = heroSkills, experience = allExperience, projects = allProjects }: Props) {
-  const { selected, toggle } = useLens();
+  const { selected, toggle, touched } = useLens();
   const nodes = skills.slice(0, positions.length).map((id, i) => ({ id, ...positions[i]! }));
   const roles = filterProjects(experience, selected).length;
   const work = filterProjects(projects, selected).length;
 
   return (
     <figure className="hero-graph" aria-labelledby="hero-graph-caption">
+      {!touched && (
+        <HandNote arrow="down" className="hero-graph__hint">
+          {notes.hero}
+        </HandNote>
+      )}
       <div className="hero-graph__stage">
         <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
           {nodes.map((n, i) => {

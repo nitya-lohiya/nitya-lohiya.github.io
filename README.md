@@ -49,6 +49,9 @@ npm test
 | `SkillLens.test.tsx` | The real components with user events: lighting up roles and filtering projects, combined skills and updated counts, the **empty state** pointing to work experience, a combination nothing uses, jumping to a closest match, every reset path, the hero graph and panel sharing one selection, keyboard use |
 | `content.test.ts` | Data integrity: unique ids, skills exist in the taxonomy, every skill connects to some work, every role has an audience, detail, and a tech stack, no role repeated as a project, audience cards point at real anchors, https links, no `[ADD: …]` placeholders or old nickname visible |
 | `App.test.tsx` | One `h1`, a section per nav link, the theme toggle (and that it is remembered), the mobile menu, the hero graph lighting up experience and the floating pill clearing it, the resume download |
+| `trail.test.ts` | Trail geometry: one ridge point per stop plus saddles, higher elevation drawn higher, scroll position → stop and fraction, hiker position on the ridge, elevation readout, edge cases (no sections, past the summit, bad index) |
+| `Trail.test.tsx` | The navigator: a working flag link for every section, starts at the 740 ft trailhead, marks the current and passed stops; the "try me" hint shows once and stays hidden after first use |
+| `countUp.test.ts` | Count-up formatting: whole numbers, before→after changes, decimals, clamping |
 
 ## CI/CD
 
@@ -78,34 +81,35 @@ All copy lives in **[`src/data/content.ts`](src/data/content.ts)**: profile, bio
 - **LinkedIn:** set `profile.linkedin`. Empty fields are hidden on the site.
 - **Theme colors:** change the tokens at the top of [`src/styles/global.css`](src/styles/global.css), for both light and dark.
 
-## Motion and visual effects
+## Design: the trail
 
-Everything is plain CSS plus two small hooks, with no animation library. All of it is switched off under `prefers-reduced-motion`, which shows a calm, static page with final values.
+The site is a hike from trailhead to summit. Each section is a stop on the trail with its own (made-up, rising) elevation, starting at Champaign's real 740 ft. The look is a field journal: paper, forest green, charcoal ink, fine rules, and a few hand-drawn sketches.
 
-| Effect | Where | How to tune or turn off |
+| Piece | Where | How to tune or turn off |
 | --- | --- | --- |
-| Page intro (nav, name typed letter by letter, copy fading up) | `.intro`, `.hero__char` in `global.css`, `RevealName` in `Hero.tsx` | `--motion-intro` (0 = instant) |
-| Hero background glows + dot grid, leaning toward the cursor | `.hero-bg*` in `global.css`, `usePointerEffects.ts` | `--bg-blob-opacity` (0 = off) |
-| Hero graph draws itself in, nodes float, center breathes | `.hero-graph*`, `@keyframes node-in / edge-in / breathe` | edit the keyframe durations |
-| Count-up metrics in "What I build" | `CountUp.tsx`, `lib/countUp.ts` | `duration` prop |
-| Scroll reveals and cascades | `useReveal.ts`, `[data-stagger]` in `global.css` | `--motion-stagger` (0 = no cascade) |
-| Card lift, tilt, and cursor spotlight | `.tilt` / `.spot`, `usePointerEffects.ts` | `--tilt-lift`, `--glow-strength`, `MAX_TILT` |
-| Sliding nav highlight, gradient progress bar | `.nav__pill`, `Nav.tsx` | transition on `.nav__pill` |
-| Theme sweep from the toggle (View Transitions API, cross-fade fallback) | `useTheme.ts`, `::view-transition-*` | delete the `::view-transition-new` rule for a plain fade |
-| "How I built it" panels unfold | `.case-study` | `unfold` keyframe |
-| Project glyphs (mini skill graphs that light up with the lens) | `SkillGlyph` in `ProjectCard.tsx`, `.glyph*` | remove `<SkillGlyph />` |
-| **Signature motif:** the Kanjeevaram "temple border" divider at the top of each section | `TempleBorder.tsx`, `.temple-border*` | the SVG triangle in the `mask` URL, the band gradient colors |
+| **Trail navigator:** the nav is a mountain ridge with a flag per section. A hiker walks it as you scroll, the walked trail darkens, the elevation readout updates, and every flag is a link | `Ridge.tsx`, `Nav.tsx`, `useTrailProgress.ts`, `lib/trail.ts` (pure geometry, unit-tested) | stops and elevations live in `trail` in `content.ts` |
+| **Skill lens as trail blazes:** pick a skill and matching work gets a painted blaze; the rest fades | `features/skill-lens/*`, `.blaze` in `global.css` | `.timeline__item.is-dim` opacity |
+| "Try me" hint that disappears after first use (remembered per browser) | `HandNote`, `touched` in `LensContext.tsx` | edit `notes.hero` in `content.ts` |
+| Handwritten margin notes | `HandNote.tsx`, `notes` in `content.ts` | edit or delete any note in `content.ts` |
+| Hand-drawn sketches (pines, compass, pack, map, summit, trail sign) with a slight ink wobble | `Sketches.tsx` (`#rough` filter) | remove a `sketch` prop on a `<Section>` |
+| Taped-in featured projects, polaroid portrait | `.tape`, `.portrait` | delete the `.tape` span in `ProjectCard.tsx` |
+| Topographic contour lines behind the hero | `public/topo.svg` (generated once), `.hero__art::before` | `--topo-opacity` (0 = off) |
+| Paper grain over the page | `body::after` | `--grain-opacity` (0 = off) |
+| Kanjeevaram temple-border divider, drawn as a ridge of peaks | `TempleBorder.tsx` | the SVG path in the `.temple-border__band` mask |
+| Gentle fades on scroll, cascading lists, count-up metrics | `useReveal.ts`, `[data-stagger]`, `CountUp.tsx` | `--motion-stagger`, `--motion-intro` |
 
-Tilt and parallax only run on mouse or trackpad (`hover: hover` and `pointer: fine`), never on touch screens. A single delegated, `requestAnimationFrame`-throttled pointer listener drives all of them.
+**Colors** are tokens at the top of `src/styles/global.css` (paper `#F3F0E8`, sand `#EBE6DA`, charcoal `#1E2320`, lichen grey `#4F5650`, deep forest `#2E4A3B`, with a "night on the trail" dark set). **Fonts:** Newsreader (headings), IBM Plex Sans (body), IBM Plex Mono (labels), Reenie Beanie (handwritten notes). All are self-hosted.
 
-**Lighthouse** (production build, mobile simulation): Performance 92–94, Accessibility 100, Best Practices 100, SEO 100. Total blocking time 0 ms, layout shift 0.
+All motion stops under `prefers-reduced-motion`. The PDF preview loads only when you scroll near the Resume section.
+
+**Lighthouse** (production build, mobile simulation): Performance 93–94, Accessibility 100, Best Practices 100, SEO 100. Total blocking time ≤ 20 ms, layout shift 0.
 
 ## Accessibility & performance notes
 
 - Semantic landmarks, a skip link, one `h1`, labelled sections, and visible focus rings.
 - Light and dark palettes each designed separately. The saved or OS theme is applied before first paint, so there is no flash of the wrong theme.
 - `prefers-reduced-motion` turns off scroll reveals, the hero graph animation, and smooth scrolling.
-- Fonts are self-hosted (`@fontsource-variable`), with no third-party requests, analytics, or cookies.
+- Fonts are self-hosted (`@fontsource`), with no third-party requests, analytics, or cookies.
 
 
 ## AI use and limitations
