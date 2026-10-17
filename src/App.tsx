@@ -1,5 +1,6 @@
 import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
+import { Intro } from './components/Intro';
 import { Nav } from './components/Nav';
 import { SketchFilter } from './components/Sketches';
 import { About, Contact, Experience, Projects, Resume, Skills } from './components/Sections';
@@ -12,6 +13,7 @@ export default function App() {
   return (
     <LensProvider>
       <SketchFilter />
+      <Intro />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

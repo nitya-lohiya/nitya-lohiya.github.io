@@ -1894,6 +1894,268 @@ img {
 }
 
 
+/* ---------- Trailhead intro (plays once per session) ---------- */
+html.intro-open,
+html.intro-open body {
+  overflow: hidden;
+}
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  cursor: pointer;
+  transition:
+    transform 0.7s cubic-bezier(0.7, 0, 0.2, 1),
+    opacity 0.7s var(--ease);
+}
+/* At the summit the whole card lifts away like a map being folded up. */
+.intro-screen.is-leaving {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+.intro-screen.is-leaving .intro-screen__card {
+  opacity: 0;
+  transform: translateY(-24px);
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.6s var(--ease);
+}
+.intro-screen::after {
+  /* the bottom edge of the lifting card, drawn as a ridge so it reads as the map's edge */
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 10px;
+  background: var(--accent);
+  opacity: 0.85;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='10'%3E%3Cpath d='M0 10L11 1L22 10Z'/%3E%3C/svg%3E") repeat-x left bottom / 22px 10px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='10'%3E%3Cpath d='M0 10L11 1L22 10Z'/%3E%3C/svg%3E") repeat-x left bottom / 22px 10px;
+  transform: translateY(100%);
+}
+.intro-screen__topo {
+  position: absolute;
+  inset: -10%;
+  background: var(--ink);
+  opacity: 0;
+  -webkit-mask: url('/topo.svg') center / cover no-repeat;
+  mask: url('/topo.svg') center / cover no-repeat;
+  animation: intro-topo 1.4s var(--ease) forwards;
+}
+@keyframes intro-topo {
+  to {
+    opacity: calc(var(--topo-opacity) * 1.1);
+    transform: scale(1.03);
+  }
+}
+.intro-screen__card {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  max-width: 880px;
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.6s var(--ease);
+}
+.intro-screen__coords {
+  color: var(--accent);
+}
+/* The coordinates type themselves out. */
+.intro-screen__type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 0;
+  border-right: 1px solid currentColor;
+  animation:
+    intro-type 0.6s steps(34, end) 0.1s forwards,
+    intro-caret 0.6s step-end 0.65s 2;
+}
+@keyframes intro-type {
+  to {
+    max-width: 44ch;
+  }
+}
+@keyframes intro-caret {
+  50% {
+    border-right-color: transparent;
+  }
+}
+.intro-screen__name {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 4.8rem);
+  font-weight: 450;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  animation: fade-up 0.8s var(--ease) 0.2s backwards;
+}
+.intro-screen__line {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  animation: fade-up 0.8s var(--ease) 0.35s backwards;
+}
+.intro-screen__soft {
+  font-style: italic;
+  color: var(--accent);
+}
+.intro-screen__ridge {
+  position: relative;
+  width: min(820px, 86vw);
+  height: clamp(90px, 14vw, 140px);
+  margin-top: clamp(28px, 5vw, 48px);
+}
+.intro-screen__ridge svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.intro-screen__line-base {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  animation: intro-draw 0.9s var(--ease) 0.3s forwards;
+}
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.intro-screen__line-walked {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.intro-screen__flag {
+  position: absolute;
+  width: 1.5px;
+  height: 22px;
+  background: var(--ink);
+  transform-origin: bottom;
+  /* kept in one transform: the minifier drops `translate` when `transform` is also set */
+  transform: translate(-50%, -100%) scaleY(0);
+  transition: transform 0.35s var(--ease);
+}
+.intro-screen__flag::after {
+  content: '';
+  position: absolute;
+  left: 1.5px;
+  top: 0;
+  border-left: 11px solid var(--accent);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+.intro-screen__flag.is-up {
+  transform: translate(-50%, -100%) scaleY(1);
+}
+.intro-screen__flag.is-summit {
+  height: 30px;
+}
+.intro-screen__flag-label {
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  translate: -50% 100%;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  color: var(--ink-muted);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease) 0.1s;
+}
+.intro-screen__flag.is-up .intro-screen__flag-label {
+  opacity: 1;
+}
+.intro-screen__hiker {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 4px var(--bg),
+    0 0 0 5px var(--accent);
+}
+.intro-screen__readout {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-top: 46px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+.intro-screen__elev {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.intro-screen__stop {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.intro-screen__go {
+  margin-top: 10px;
+  font-family: 'Reenie Beanie', 'Bradley Hand', cursive;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--bark);
+  rotate: -2deg;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+.intro-screen__go.is-shown {
+  opacity: 1;
+  transform: none;
+}
+.intro-screen__skip {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(var(--gutter) + 8px);
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--ink-muted);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition:
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+.intro-screen__skip:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+@media (max-width: 560px) {
+  .intro-screen__flag-label {
+    display: none;
+  }
+  .intro-screen__flag.is-summit .intro-screen__flag-label,
+  .intro-screen__flag:first-child .intro-screen__flag-label {
+    display: block;
+  }
+}
+
 /* =====================================================================
    Motion. Deliberately quiet: slow fades, no bounce, nothing that follows
    the cursor. Switched off entirely under prefers-reduced-motion below.

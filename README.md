@@ -51,6 +51,7 @@ npm test
 | `App.test.tsx` | One `h1`, a section per nav link, the theme toggle (and that it is remembered), the mobile menu, the hero graph lighting up experience and the floating pill clearing it, the resume download |
 | `trail.test.ts` | Trail geometry: one ridge point per stop plus saddles, higher elevation drawn higher, scroll position → stop and fraction, hiker position on the ridge, elevation readout, edge cases (no sections, past the summit, bad index) |
 | `Trail.test.tsx` | The navigator: a working flag link for every section, starts at the 740 ft trailhead, marks the current and passed stops; the "try me" hint shows once and stays hidden after first use |
+| `Intro.test.tsx` | The intro: climb progress → stop, plays on a first visit and previews every stop, skips with the button or Escape, finishes on its own, never replays in a session, never plays with reduced motion |
 | `countUp.test.ts` | Count-up formatting: whole numbers, before→after changes, decimals, clamping |
 
 ## CI/CD
@@ -87,6 +88,7 @@ The site is a hike from trailhead to summit. Each section is a stop on the trail
 
 | Piece | Where | How to tune or turn off |
 | --- | --- | --- |
+| **Trailhead intro:** a 2–3 s opener that types the coordinates, draws the ridge, climbs it flag by flag (a preview of every section) while the elevation counts up, then lifts away like a map. Once per session; skip with the button, Escape, or a click; never shown with reduced motion | `Intro.tsx`, `.intro-screen*` | timings in `INTRO_TIMING` in `Intro.tsx`; delete `<Intro />` in `App.tsx` to turn it off |
 | **Trail navigator:** the nav is a mountain ridge with a flag per section. A hiker walks it as you scroll, the walked trail darkens, the elevation readout updates, and every flag is a link | `Ridge.tsx`, `Nav.tsx`, `useTrailProgress.ts`, `lib/trail.ts` (pure geometry, unit-tested) | stops and elevations live in `trail` in `content.ts` |
 | **Skill lens as trail blazes:** pick a skill and matching work gets a painted blaze; the rest fades | `features/skill-lens/*`, `.blaze` in `global.css` | `.timeline__item.is-dim` opacity |
 | "Try me" hint that disappears after first use (remembered per browser) | `HandNote`, `touched` in `LensContext.tsx` | edit `notes.hero` in `content.ts` |
