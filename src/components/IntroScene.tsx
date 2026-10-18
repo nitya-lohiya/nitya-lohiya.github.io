@@ -128,6 +128,7 @@ export const IntroScene = forwardRef<SVGPathElement, Props>(function IntroScene(
 
       <Scenery />
       {/* the trail, its markers, and the summit flag sit on top of every layer */}
+      <path d={trailD} className="scene__trail-preview" />
       <path d={trailD} className="scene__trail" mask="url(#trail-reveal)" />
       <path d={trailD} ref={trailRef} className="scene__trail-guide" />
 
