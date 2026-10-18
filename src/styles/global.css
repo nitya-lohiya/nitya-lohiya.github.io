@@ -778,13 +778,6 @@ img {
   color: var(--ink);
   font-weight: 600;
 }
-.hero-graph__fig {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
-}
 .hero-graph {
   position: relative;
 }
