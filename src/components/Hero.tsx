@@ -2,6 +2,7 @@ import { focusAreas, profile } from '../data/content';
 import { HeroGraph } from '../features/skill-lens/HeroGraph';
 import { CountUp } from './CountUp';
 import { GitHubIcon, LinkedInIcon } from './Icons';
+import { Meadow } from './Wildflowers';
 
 export function Hero() {
   return (
@@ -48,6 +49,7 @@ export function Hero() {
         </div>
 
         <div className="focus">
+          <Meadow className="hero__meadow" seed={17} count={12} width={210} height={40} />
           <h2 className="focus__title">What I build</h2>
           <ul className="focus__list" data-stagger>
             {focusAreas.map((f) => (

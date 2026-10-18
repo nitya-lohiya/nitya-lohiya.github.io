@@ -6,8 +6,11 @@ import { IntroScene, SUMMIT, TRAIL_POINTS } from './IntroScene';
 
 export const INTRO_KEY = 'intro-seen';
 
-/** Pacing, in ms. Slow enough to read: the climb spends about half a second at each stop. */
-export const INTRO_TIMING = { climbStart: 1900, climbEnd: 5300, exitAt: 6800, exitLength: 950 };
+/**
+ * Pacing, in ms. The climb takes about a second per stop, and then the intro waits at the
+ * summit for as long as the visitor likes: it only leaves when they press "Start the hike".
+ */
+export const INTRO_TIMING = { climbStart: 2200, climbEnd: 8200, exitLength: 950 };
 export type IntroTiming = typeof INTRO_TIMING;
 
 /** How far along the trail each stop sits (0 = trailhead, 1 = summit). */
@@ -42,11 +45,11 @@ const fallbackMarkers = (): Marker[] =>
  * itself, the route is laid out as an itinerary, a hiker climbs the trail ticking off each stop,
  * a flag goes up on the summit, and the scene pushes in to reveal the site.
  *
- * Once per session; skippable at any moment (button, Escape, Enter); never with reduced motion.
+ * Once per session; "Start the hike" (or Escape/Enter) leaves at any moment; never with reduced motion.
  */
 export function Intro({ timing = INTRO_TIMING }: { timing?: IntroTiming }) {
   // Depend on the numbers, not the object, so a new `timing` object each render can't restart the clock.
-  const { climbStart, climbEnd, exitAt, exitLength } = timing;
+  const { climbStart, climbEnd, exitLength } = timing;
   const [phase, setPhase] = useState<'off' | 'play' | 'exit'>(() => (shouldPlay() ? 'play' : 'off'));
   const [t, setT] = useState(0);
   const [hiker, setHiker] = useState({ x: TRAIL_POINTS[0]![0], y: TRAIL_POINTS[0]![1] });
@@ -79,7 +82,7 @@ export function Intro({ timing = INTRO_TIMING }: { timing?: IntroTiming }) {
     }
   }, [phase]);
 
-  // The clock: drives the climb, then hands off to the exit.
+  // The clock: drives the climb, then stops at the summit and waits for the visitor.
   useEffect(() => {
     if (phase !== 'play') return;
     const start = performance.now();
@@ -94,11 +97,10 @@ export function Intro({ timing = INTRO_TIMING }: { timing?: IntroTiming }) {
         const p = path.getPointAtLength(easeInOutSine(climb) * len);
         setHiker({ x: p.x, y: p.y });
       }
-      if (elapsed >= exitAt) finish();
-      else frame = requestAnimationFrame(tick);
+      if (climb < 1) frame = requestAnimationFrame(tick);
     });
     return () => cancelAnimationFrame(frame);
-  }, [phase, finish, climbStart, climbEnd, exitAt]);
+  }, [phase, climbStart, climbEnd]);
 
   useEffect(() => {
     if (phase !== 'exit') return;
@@ -174,16 +176,15 @@ export function Intro({ timing = INTRO_TIMING }: { timing?: IntroTiming }) {
           </span>
         </div>
 
-        <div className={`intro-screen__go${atSummit ? ' is-shown' : ''}`}>
-          <button type="button" className="btn btn--primary" onClick={finish} tabIndex={atSummit ? 0 : -1}>
+        <div className={`intro-screen__go${atSummit ? ' is-ready' : ''}`}>
+          <button type="button" className="btn btn--primary" onClick={finish}>
             Start the hike <span aria-hidden="true">→</span>
           </button>
+          <span className="intro-screen__go-note" aria-hidden="true">
+            {atSummit ? 'made it! ready when you are' : 'or watch the climb'}
+          </span>
         </div>
       </div>
-
-      <button type="button" className="intro-screen__skip" onClick={finish}>
-        Skip intro <span aria-hidden="true">→</span>
-      </button>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { trail } from '../data/content';
 import { INTRO_KEY, INTRO_TIMING, Intro, STOP_AT, climbAt } from './Intro';
 
 // A sped-up clock so the tests don't sit through the whole hike.
-const fast = { climbStart: 20, climbEnd: 80, exitAt: 120, exitLength: 30 };
+const fast = { climbStart: 20, climbEnd: 80, exitLength: 30 };
 
 describe('climbAt', () => {
   it('starts at the trailhead and ends on the summit', () => {
@@ -26,10 +26,9 @@ describe('climbAt', () => {
 });
 
 describe('pacing', () => {
-  it('gives the climb enough time to read (about half a second per stop) and stays short overall', () => {
+  it('gives each stop about a second, so the route can actually be read', () => {
     const climb = INTRO_TIMING.climbEnd - INTRO_TIMING.climbStart;
-    expect(climb / (trail.length - 1)).toBeGreaterThanOrEqual(450);
-    expect(INTRO_TIMING.exitAt).toBeLessThanOrEqual(8000);
+    expect(climb / (trail.length - 1)).toBeGreaterThanOrEqual(900);
   });
 });
 
@@ -53,13 +52,18 @@ describe('<Intro />', { timeout: 15000 }, () => {
   });
 
   it('ticks off every stop and offers "Start the hike" at the summit', async () => {
-    render(<Intro timing={{ ...fast, exitAt: 5000 }} />);
+    render(<Intro timing={fast} />);
     await waitFor(() => expect(screen.getByText('Summit reached')).toBeInTheDocument(), { timeout: 8000 });
     expect(document.querySelectorAll('.intro-screen__route li.is-done')).toHaveLength(trail.length);
     expect(screen.getByRole('button', { name: /start the hike/i })).toBeInTheDocument();
   });
 
-  it('can be skipped with the button, and is remembered for the session', async () => {
+  it('offers "Start the hike" from the very first second', () => {
+    render(<Intro />);
+    expect(screen.getByRole('button', { name: /start the hike/i })).toBeEnabled();
+  });
+
+  it('leaves when the visitor starts the hike, and is remembered for the session', async () => {
     const user = userEvent.setup();
     render(
       <>
@@ -68,7 +72,7 @@ describe('<Intro />', { timeout: 15000 }, () => {
       </>,
     );
     expect(sessionStorage.getItem(INTRO_KEY)).toBe('1');
-    await user.click(screen.getByRole('button', { name: /skip intro/i }));
+    await user.click(screen.getByRole('button', { name: /start the hike/i }));
     await waitFor(() => expect(screen.queryByTestId('intro')).toBeNull(), { timeout: 8000 });
     expect(document.documentElement).not.toHaveClass('intro-open');
     expect(document.querySelector('main')).not.toHaveAttribute('inert');
@@ -85,9 +89,12 @@ describe('<Intro />', { timeout: 15000 }, () => {
     await waitFor(() => expect(screen.queryByTestId('intro')).toBeNull(), { timeout: 8000 });
   });
 
-  it('finishes on its own and gets out of the way', async () => {
+  it('waits at the summit instead of leaving on its own', async () => {
     render(<Intro timing={fast} />);
-    await waitFor(() => expect(screen.queryByTestId('intro')).toBeNull(), { timeout: 8000 });
+    await waitFor(() => expect(screen.getByText('Summit reached')).toBeInTheDocument(), { timeout: 8000 });
+    await new Promise((r) => setTimeout(r, 400));
+    expect(screen.getByTestId('intro')).toBeInTheDocument();
+    expect(screen.getByText(/ready when you are/i)).toBeInTheDocument();
   });
 
   it('does not play again in the same session', () => {

@@ -7,6 +7,7 @@ import { ArrowIcon, DownloadIcon, GitHubIcon, LinkedInIcon, MailIcon } from './I
 import { HandNote } from './HandNote';
 import { Section } from './Section';
 import { Compass, Pack, Pines, Summit, TrailMap, TrailSign } from './Sketches';
+import { PressedFlower } from './Wildflowers';
 
 export function About() {
   return (
@@ -35,6 +36,7 @@ export function About() {
               )}
             </div>
             <figcaption className="portrait__caption">Champaign-Urbana, IL</figcaption>
+            <PressedFlower className="portrait__flower" />
           </figure>
           <dl className="facts">
             {quickFacts.map((f) => (

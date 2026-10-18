@@ -1,8 +1,10 @@
 import { navLinks, profile } from '../data/content';
+import { Meadow } from './Wildflowers';
 
 export function Footer() {
   return (
     <footer className="footer">
+      <Meadow className="footer__meadow" seed={31} count={64} width={1200} height={46} />
       <div className="container footer__inner">
         <p>
           © {new Date().getFullYear()} {profile.name} <span aria-hidden="true">·</span>{' '}

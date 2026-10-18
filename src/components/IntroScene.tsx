@@ -1,4 +1,5 @@
 import { forwardRef } from 'react';
+import { WildflowerPatch } from './Wildflowers';
 
 /**
  * The intro's poster: a hand-inked mountain scene in the style of an old national-park print.
@@ -84,6 +85,14 @@ export const IntroScene = forwardRef<SVGPathElement, Props>(function IntroScene(
         })}
       </g>
 
+      {/* two slow clouds, so the scene stays alive while it waits at the summit */}
+      <g className="scene__cloud scene__cloud--a">
+        <path d="M250 150 q10 -26 38 -18 q14 -22 40 -8 q30 -6 30 20 q18 4 12 18 l-128 0 q-8 -10 8 -12 z" />
+      </g>
+      <g className="scene__cloud scene__cloud--b">
+        <path d="M600 110 q8 -18 28 -12 q12 -16 30 -4 q22 -2 20 14 q12 4 8 12 l-92 0 q-6 -8 6 -10 z" />
+      </g>
+
       <g className="scene__layer scene__layer--far">
         <path d={FAR} className="scene__fill" />
         <path d={FAR} className="scene__ink" pathLength={1} />
@@ -100,6 +109,11 @@ export const IntroScene = forwardRef<SVGPathElement, Props>(function IntroScene(
         {PINES.map(([x, y, s], i) => (
           <path key={i} d={pine(x, y, s)} className="scene__pine" style={{ animationDelay: `${1.1 + i * 0.05}s` }} />
         ))}
+        <g className="scene__flowers">
+          <WildflowerPatch seed={11} count={18} width={330} x={262} ground={609} minH={14} maxH={30} />
+          <WildflowerPatch seed={23} count={14} width={250} x={632} ground={614} minH={12} maxH={26} />
+          <WildflowerPatch seed={5} count={7} width={110} x={1052} ground={611} minH={12} maxH={22} />
+        </g>
       </g>
 
       {/* the trail, its markers, and the summit flag sit on top of every layer */}

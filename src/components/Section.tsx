@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { trail } from '../data/content';
 import { HandNote } from './HandNote';
 import { TempleBorder } from './TempleBorder';
+import { Meadow } from './Wildflowers';
 
 type Props = {
   id: string;
@@ -35,7 +36,12 @@ export function Section({ id, index, eyebrow, title, intro, sketch, note, childr
               {stop.stop} <span aria-hidden="true">·</span> elev. {stop.elevation.toLocaleString('en-US')} ft
             </p>
           )}
-          {sketch && <div className="section__sketch">{sketch}</div>}
+          {sketch && (
+            <div className="section__sketch">
+              {sketch}
+              <Meadow className="section__tuft" seed={id.length * 13 + index.charCodeAt(1)} count={5} width={64} height={30} />
+            </div>
+          )}
           {note && <HandNote className="section__note">{note}</HandNote>}
         </aside>
         <div className="section__body">

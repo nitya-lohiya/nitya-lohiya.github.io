@@ -937,7 +937,7 @@ img {
   margin-top: 10px;
   color: var(--ink-muted);
 }
-.section__sketch svg {
+.section__sketch > svg:not(.meadow) {
   display: block;
   width: 100%;
   height: auto;
@@ -2258,39 +2258,6 @@ html.intro-open body {
   text-transform: uppercase;
   color: var(--accent);
 }
-.intro-screen__go {
-  margin-top: 16px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    opacity 0.45s var(--ease),
-    transform 0.45s var(--ease);
-}
-.intro-screen__go.is-shown {
-  opacity: 1;
-  transform: none;
-}
-.intro-screen__skip {
-  position: absolute;
-  right: var(--gutter);
-  top: var(--gutter);
-  padding: 7px 12px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  color: var(--ink-muted);
-  font: inherit;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  cursor: pointer;
-  transition:
-    color 0.3s var(--ease),
-    border-color 0.3s var(--ease);
-}
-.intro-screen__skip:hover {
-  color: var(--ink);
-  border-color: var(--ink);
-}
 
 /* Phones: the poster on top at its natural shape, the field guide card below. */
 @media (max-width: 760px), (max-aspect-ratio: 1/1) {
@@ -2319,6 +2286,178 @@ html.intro-open body {
   .scene__marker text {
     font-size: 22px;
   }
+}
+
+/* ---------- Wildflowers ---------- */
+:root {
+  /* muted meadow colors, used only for the little flowers */
+  --wf-gold: #c9a24a;
+  --wf-rose: #c4867a;
+  --wf-blue: #7f93b5;
+  --wf-white: #f4efe3;
+  --wf-stem: #5d7556;
+}
+:root[data-theme='dark'] {
+  --wf-gold: #c7a656;
+  --wf-rose: #c48f84;
+  --wf-blue: #8fa3c4;
+  --wf-white: #ddd8c9;
+  --wf-stem: #7d9876;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --wf-gold: #c7a656;
+    --wf-rose: #c48f84;
+    --wf-blue: #8fa3c4;
+    --wf-white: #ddd8c9;
+    --wf-stem: #7d9876;
+  }
+}
+.wf__line {
+  fill: none;
+  stroke: var(--wf-stem);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+}
+.wf__leaf {
+  stroke-width: 1.3;
+}
+.wf__head {
+  stroke: color-mix(in srgb, var(--ink) 55%, transparent);
+  stroke-width: 0.5;
+}
+.wf--gold { fill: var(--wf-gold); }
+.wf--rose { fill: var(--wf-rose); }
+.wf--blue { fill: var(--wf-blue); }
+.wf--white { fill: var(--wf-white); }
+.wf__eye {
+  fill: var(--wf-gold);
+}
+.wf--gold .wf__eye {
+  fill: var(--bark);
+}
+.wf__vein {
+  fill: none;
+  stroke: color-mix(in srgb, var(--ink) 35%, transparent);
+  stroke-width: 0.5;
+}
+/* a slow breeze */
+.wf__stem {
+  animation: sway 5.5s ease-in-out infinite alternate;
+}
+@keyframes sway {
+  from { transform: rotate(-2.5deg); }
+  to { transform: rotate(2.5deg); }
+}
+.meadow {
+  display: block;
+  overflow: visible;
+}
+/* standalone patches open up when they scroll into view */
+.js-reveal .meadow.reveal {
+  transform: none;
+  opacity: 1;
+}
+.js-reveal .meadow.reveal .wf__head {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  transform: scale(0.2);
+  transition: transform 0.9s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+.js-reveal .meadow.reveal.is-visible .wf__head {
+  transform: none;
+}
+.section__sketch {
+  position: relative;
+}
+.section__tuft {
+  position: absolute;
+  right: -40px;
+  bottom: 1px;
+  width: 54px;
+  height: 26px;
+}
+.focus {
+  position: relative;
+}
+/* a few flowers growing on the "What I build" rule */
+.hero__meadow {
+  position: absolute;
+  right: 12px;
+  bottom: 100%;
+  width: 210px;
+  height: 40px;
+}
+.footer {
+  position: relative;
+  margin-top: 46px;
+  border-top: 1px solid var(--line);
+}
+.footer__meadow {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  translate: -50% 1px;
+  width: min(1200px, 100%);
+  height: 46px;
+}
+.portrait__flower {
+  position: absolute;
+  right: -16px;
+  bottom: 22px;
+  width: 30px;
+  height: 52px;
+  rotate: 18deg;
+}
+.scene__flowers {
+  opacity: 0;
+  animation: paint 0.9s var(--ease) 1.35s forwards;
+}
+.scene__flowers .wf__head {
+  stroke-width: 0.8;
+}
+
+/* Intro: clouds drift while it waits; the "start" button settles in at the summit. */
+.scene__cloud path {
+  fill: var(--bg-raised);
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  filter: url(#rough);
+  opacity: 0;
+  animation: paint 1s var(--ease) 1.4s forwards;
+}
+.scene__cloud {
+  animation: drift-x 40s linear infinite alternate;
+}
+.scene__cloud--b {
+  animation-duration: 55s;
+  animation-direction: alternate-reverse;
+}
+@keyframes drift-x {
+  from { transform: translateX(-60px); }
+  to { transform: translateX(80px); }
+}
+.intro-screen__go {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 16px;
+  animation: fade-up 0.8s var(--ease) 1.2s backwards;
+}
+.intro-screen__go-note {
+  font-family: 'Reenie Beanie', 'Bradley Hand', cursive;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--bark);
+}
+.intro-screen__go.is-ready .btn {
+  animation: nudge 2.4s var(--ease) 0.4s infinite;
+}
+@keyframes nudge {
+  0%, 70%, 100% { transform: none; }
+  80% { transform: translateX(4px); }
+  90% { transform: translateX(0); }
 }
 
 /* =====================================================================
