@@ -4,7 +4,7 @@ import { flushSync } from 'react-dom';
 export type Theme = 'light' | 'dark';
 export const THEME_KEY = 'theme';
 
-/** Saved choice first, then the OS preference. Storage can throw in private modes. */
+/** A visitor's saved choice first; otherwise the site opens in dark mode. Storage can throw in private modes. */
 export function getInitialTheme(): Theme {
   const attr = document.documentElement.getAttribute('data-theme');
   if (attr === 'light' || attr === 'dark') return attr;
@@ -14,7 +14,7 @@ export function getInitialTheme(): Theme {
   } catch {
     /* ignore */
   }
-  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'dark';
 }
 
 export function useTheme() {

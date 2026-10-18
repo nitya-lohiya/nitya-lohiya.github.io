@@ -67,7 +67,6 @@ export const focusAreas = [
 export const education = {
   school: 'University of Illinois Urbana-Champaign',
   degree: 'B.S. in Computer Science and Statistics',
-  honors: ['GPA 3.8', "Dean's List"],
   coursework: [
     'Data Structures & Algorithms (CS 225)',
     'Discrete Structures (CS 173)',
