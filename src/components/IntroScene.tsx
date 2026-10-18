@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import { WildflowerPatch } from './Wildflowers';
 
 /**
@@ -51,6 +51,63 @@ const PINES: [number, number, number][] = [
 const pine = (x: number, y: number, s: number) =>
   `M${x} ${y - 62 * s} L${x - 12 * s} ${y - 40 * s} L${x - 6 * s} ${y - 40 * s} L${x - 17 * s} ${y - 20 * s} L${x - 9 * s} ${y - 20 * s} L${x - 21 * s} ${y} L${x + 21 * s} ${y} L${x + 9 * s} ${y - 20 * s} L${x + 17 * s} ${y - 20 * s} L${x + 6 * s} ${y - 40 * s} L${x + 12 * s} ${y - 40 * s} Z`;
 
+/**
+ * Everything that never changes during the climb (sky, ridges, pines, flowers). Memoized so the
+ * per-frame updates of the hiker and markers don't re-render ~60 static shapes every frame.
+ */
+const Scenery = memo(function Scenery() {
+  return (
+    <>
+        <circle className="scene__sun" cx="985" cy="168" r="58" />
+        <g className="scene__sun-rays">
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = (i / 12) * Math.PI * 2;
+            return (
+              <line
+                key={i}
+                x1={985 + Math.cos(a) * 74}
+                y1={168 + Math.sin(a) * 74}
+                x2={985 + Math.cos(a) * 90}
+                y2={168 + Math.sin(a) * 90}
+              />
+            );
+          })}
+        </g>
+
+        {/* two slow clouds, so the scene stays alive while it waits at the summit */}
+        <g className="scene__cloud scene__cloud--a">
+          <path d="M250 150 q10 -26 38 -18 q14 -22 40 -8 q30 -6 30 20 q18 4 12 18 l-128 0 q-8 -10 8 -12 z" />
+        </g>
+        <g className="scene__cloud scene__cloud--b">
+          <path d="M600 110 q8 -18 28 -12 q12 -16 30 -4 q22 -2 20 14 q12 4 8 12 l-92 0 q-6 -8 6 -10 z" />
+        </g>
+
+        <g className="scene__layer scene__layer--far">
+          <path d={FAR} className="scene__fill" />
+          <path d={FAR} className="scene__ink" pathLength={1} />
+        </g>
+        <g className="scene__layer scene__layer--main">
+          <path d={MAIN} className="scene__fill" />
+          <path d={MAIN} className="scene__ink" pathLength={1} />
+          <path d={ROCK} className="scene__ink scene__ink--rock" pathLength={1} />
+        </g>
+
+        <g className="scene__layer scene__layer--near">
+          <path d={NEAR} className="scene__fill" />
+          <path d={NEAR} className="scene__ink" pathLength={1} />
+          {PINES.map(([x, y, s], i) => (
+            <path key={i} d={pine(x, y, s)} className="scene__pine" style={{ animationDelay: `${1.1 + i * 0.05}s` }} />
+          ))}
+          <g className="scene__flowers">
+            <WildflowerPatch seed={11} count={18} width={330} x={262} ground={609} minH={14} maxH={30} />
+            <WildflowerPatch seed={23} count={14} width={250} x={632} ground={614} minH={12} maxH={26} />
+            <WildflowerPatch seed={5} count={7} width={110} x={1052} ground={611} minH={12} maxH={22} />
+          </g>
+        </g>
+    </>
+  );
+});
+
 type Props = { markers: { x: number; y: number; label: string; up: boolean }[]; summit: boolean; progress: number };
 
 export const IntroScene = forwardRef<SVGPathElement, Props>(function IntroScene({ markers, summit, progress }, trailRef) {
@@ -69,53 +126,7 @@ export const IntroScene = forwardRef<SVGPathElement, Props>(function IntroScene(
         </mask>
       </defs>
 
-      <circle className="scene__sun" cx="985" cy="168" r="58" />
-      <g className="scene__sun-rays">
-        {Array.from({ length: 12 }, (_, i) => {
-          const a = (i / 12) * Math.PI * 2;
-          return (
-            <line
-              key={i}
-              x1={985 + Math.cos(a) * 74}
-              y1={168 + Math.sin(a) * 74}
-              x2={985 + Math.cos(a) * 90}
-              y2={168 + Math.sin(a) * 90}
-            />
-          );
-        })}
-      </g>
-
-      {/* two slow clouds, so the scene stays alive while it waits at the summit */}
-      <g className="scene__cloud scene__cloud--a">
-        <path d="M250 150 q10 -26 38 -18 q14 -22 40 -8 q30 -6 30 20 q18 4 12 18 l-128 0 q-8 -10 8 -12 z" />
-      </g>
-      <g className="scene__cloud scene__cloud--b">
-        <path d="M600 110 q8 -18 28 -12 q12 -16 30 -4 q22 -2 20 14 q12 4 8 12 l-92 0 q-6 -8 6 -10 z" />
-      </g>
-
-      <g className="scene__layer scene__layer--far">
-        <path d={FAR} className="scene__fill" />
-        <path d={FAR} className="scene__ink" pathLength={1} />
-      </g>
-      <g className="scene__layer scene__layer--main">
-        <path d={MAIN} className="scene__fill" />
-        <path d={MAIN} className="scene__ink" pathLength={1} />
-        <path d={ROCK} className="scene__ink scene__ink--rock" pathLength={1} />
-      </g>
-
-      <g className="scene__layer scene__layer--near">
-        <path d={NEAR} className="scene__fill" />
-        <path d={NEAR} className="scene__ink" pathLength={1} />
-        {PINES.map(([x, y, s], i) => (
-          <path key={i} d={pine(x, y, s)} className="scene__pine" style={{ animationDelay: `${1.1 + i * 0.05}s` }} />
-        ))}
-        <g className="scene__flowers">
-          <WildflowerPatch seed={11} count={18} width={330} x={262} ground={609} minH={14} maxH={30} />
-          <WildflowerPatch seed={23} count={14} width={250} x={632} ground={614} minH={12} maxH={26} />
-          <WildflowerPatch seed={5} count={7} width={110} x={1052} ground={611} minH={12} maxH={22} />
-        </g>
-      </g>
-
+      <Scenery />
       {/* the trail, its markers, and the summit flag sit on top of every layer */}
       <path d={trailD} className="scene__trail" mask="url(#trail-reveal)" />
       <path d={trailD} ref={trailRef} className="scene__trail-guide" />
