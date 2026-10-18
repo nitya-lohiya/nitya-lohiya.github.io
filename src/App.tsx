@@ -1,17 +1,19 @@
 import { Footer } from './components/Footer';
 import { Hero } from './components/Hero';
+import { Intro } from './components/Intro';
 import { Nav } from './components/Nav';
+import { SketchFilter } from './components/Sketches';
 import { About, Contact, Experience, Projects, Resume, Skills } from './components/Sections';
 import { LensProvider } from './features/skill-lens/LensContext';
 import { LensPill } from './features/skill-lens/LensPill';
-import { usePointerEffects } from './hooks/usePointerEffects';
 import { useReveal } from './hooks/useReveal';
 
 export default function App() {
   useReveal();
-  usePointerEffects();
   return (
     <LensProvider>
+      <SketchFilter />
+      <Intro />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

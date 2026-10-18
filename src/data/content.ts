@@ -531,3 +531,31 @@ export const navLinks = [
   { id: 'resume', label: 'Resume' },
   { id: 'contact', label: 'Contact' },
 ];
+
+/**
+ * The hike. Every section is a stop on the trail, from the trailhead (the hero) to the summit
+ * (contact). Elevations are made up, but they rise with the page; Champaign really does sit
+ * at about 740 ft.
+ */
+export const trail = [
+  { id: 'top', label: 'Start', stop: 'Trailhead', elevation: 740 },
+  { id: 'about', label: 'About', stop: 'First switchback', elevation: 1180 },
+  { id: 'experience', label: 'Experience', stop: 'The climb', elevation: 2460 },
+  { id: 'projects', label: 'Projects', stop: 'Side trails', elevation: 3120 },
+  { id: 'skills', label: 'Skills', stop: 'Gear check', elevation: 3580 },
+  { id: 'resume', label: 'Resume', stop: 'Trail map', elevation: 3940 },
+  { id: 'contact', label: 'Contact', stop: 'Summit', elevation: 4410 },
+] as const;
+
+/**
+ * Handwritten margin notes. Short and plain, the way I'd scribble them in a trail journal.
+ * [EDIT: rewrite any of these in your own words]
+ */
+export const notes = {
+  hero: 'pick a skill, I’ll show you the trail',
+  lens: 'these are trail blazes. follow one!',
+  itqan: '119 concepts, each one checked three ways',
+  idx: 'indexes matter: 2.3 ms → 0.9 ms',
+  projects: 'the side trails are where I try new gear',
+  contact: 'you made it to the summit. say hi!',
+};

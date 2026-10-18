@@ -11,8 +11,9 @@ export function LensPill() {
   const work = filterProjects(projects, selected).length;
   return (
     <div className="lens-pill" role="region" aria-label="Active skill lens" data-testid="lens-pill">
-      <span className="lens-pill__icon" aria-hidden="true" />
+      <span className="blaze blaze--pill" aria-hidden="true" />
       <span className="lens-pill__text">
+        <span className="lens-pill__kicker">On the trail</span>
         <strong>{joinLabels(selected.map(skillLabel))}</strong>
         <span className="lens-pill__counts">
           {countLabel(roles, 'role', 'roles')} · {countLabel(work, 'project', 'projects')}

@@ -34,14 +34,17 @@ function SkillGlyph({ skills }: { skills: readonly string[] }) {
 
 export function ProjectCard({ project, wide, index = 0 }: Props) {
   const { caseStudy } = project;
+  const { selected } = useLens();
   return (
     <li
       id={`project-${project.id}`}
-      className={`project-card${wide ? ' project-card--wide' : ''}`}
+      className={`project-card${wide ? ' project-card--wide' : ''}${selected.length > 0 ? ' is-lit' : ''}`}
       data-testid="project-card"
       style={{ '--i': index } as CSSProperties}
     >
       <article className="tilt" aria-labelledby={`project-${project.id}-title`}>
+        {project.featured && <span className="tape" aria-hidden="true" />}
+        <span className="blaze" aria-hidden="true" />
         <SkillGlyph skills={project.skills} />
         <div className="project-card__meta">
           <span>{project.context}</span>

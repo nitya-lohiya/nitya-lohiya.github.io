@@ -30,11 +30,13 @@ export function LensPanel({ experience = allExperience, projects = allProjects }
       <div className="lens-panel__intro">
         <h3 id={headingId} className="lens-panel__title">
           <span className="lens-panel__icon" aria-hidden="true" />
-          Skill lens
+          <span>
+            Skill lens: <span className="lens-panel__sub">pick a trail</span>
+          </span>
         </h3>
         <p className="lens-panel__hint">
-          Look at my work through a skill. Roles and projects that use everything you pick light up, and the rest
-          fade back. Each number shows how many pieces of work would stay lit.
+          Every skill is a trail blaze. Pick one (or a few) and the roles and projects on that trail get marked,
+          while the rest fade back. The number on each blaze is how many you’d see.
         </p>
       </div>
 

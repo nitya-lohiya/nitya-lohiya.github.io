@@ -1,37 +1,20 @@
-import type { CSSProperties } from 'react';
 import { focusAreas, profile } from '../data/content';
 import { HeroGraph } from '../features/skill-lens/HeroGraph';
 import { CountUp } from './CountUp';
 import { GitHubIcon, LinkedInIcon } from './Icons';
-
-/** The name, one letter at a time. Screen readers get the plain name from aria-label. */
-function RevealName({ text }: { text: string }) {
-  return (
-    <span className="hero__name" aria-hidden="true">
-      {[...text].map((ch, i) => (
-        <span key={i} className="hero__char" style={{ '--i': i } as CSSProperties}>
-          {ch === ' ' ? ' ' : ch}
-        </span>
-      ))}
-    </span>
-  );
-}
+import { Meadow } from './Wildflowers';
 
 export function Hero() {
   return (
     <section id="top" className="hero-wrap" aria-labelledby="hero-title">
-      <div className="hero-bg" aria-hidden="true">
-        <span className="hero-bg__blob hero-bg__blob--a" />
-        <span className="hero-bg__blob hero-bg__blob--b" />
-        <span className="hero-bg__blob hero-bg__blob--c" />
-        <span className="hero-bg__grid" />
-      </div>
-
       <div className="hero container">
         <div className="hero__copy">
-          <p className="eyebrow intro intro--1">{profile.role}</p>
-          <h1 id="hero-title" className="hero__title" aria-label={profile.name}>
-            <RevealName text={profile.name} />
+          <p className="hero__meta eyebrow intro intro--1">
+            <span>{profile.role}</span>
+            <span className="hero__coords">40.12° N, 88.24° W</span>
+          </p>
+          <h1 id="hero-title" className="hero__title intro intro--1">
+            {profile.name}
           </h1>
           <p className="hero__tagline intro intro--2">
             I build technology that makes <em>people’s lives</em> better.
@@ -66,6 +49,7 @@ export function Hero() {
         </div>
 
         <div className="focus">
+          <Meadow className="hero__meadow" seed={17} count={12} width={210} height={40} />
           <h2 className="focus__title">What I build</h2>
           <ul className="focus__list" data-stagger>
             {focusAreas.map((f) => (
