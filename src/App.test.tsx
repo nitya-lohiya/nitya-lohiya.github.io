@@ -92,3 +92,19 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: /download pdf/i })).toHaveAttribute('download');
   });
 });
+
+describe('theme default', () => {
+  it('opens in dark mode for a first-time visitor, even if their OS prefers light', async () => {
+    const { getInitialTheme } = await import('./hooks/useTheme');
+    const matchMedia = window.matchMedia;
+    window.matchMedia = ((q: string) => ({ matches: q.includes('light'), media: q })) as unknown as typeof window.matchMedia;
+    expect(getInitialTheme()).toBe('dark');
+    window.matchMedia = matchMedia;
+  });
+
+  it('keeps a returning visitor’s choice', async () => {
+    const { getInitialTheme, THEME_KEY } = await import('./hooks/useTheme');
+    localStorage.setItem(THEME_KEY, 'light');
+    expect(getInitialTheme()).toBe('light');
+  });
+});

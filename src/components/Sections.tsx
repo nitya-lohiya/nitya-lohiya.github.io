@@ -55,13 +55,6 @@ export function About() {
           <p className="education__degree">
             {education.degree}
           </p>
-          <ul className="tag-list" aria-label="Honors">
-            {education.honors.map((h) => (
-              <li key={h} className="tag tag--accent">
-                {h}
-              </li>
-            ))}
-          </ul>
         </div>
         <div>
           <p className="education__label">Relevant coursework</p>
